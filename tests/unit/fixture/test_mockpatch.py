@@ -15,8 +15,8 @@
 
 import mock
 
-from openstack.common.fixture import mockpatch
-from tests import utils
+from oslo.test import base
+from oslo.test.fixture import mockpatch
 
 
 class Foo(object):
@@ -28,7 +28,7 @@ def mocking_bar(self):
     return 'mocked!'
 
 
-class TestMockPatch(utils.BaseTestCase):
+class TestMockPatch(base.BaseTestCase):
     def test_mock_patch_with_replacement(self):
         self.useFixture(mockpatch.Patch('%s.Foo.bar' % (__name__),
                                         mocking_bar))
@@ -41,7 +41,7 @@ class TestMockPatch(utils.BaseTestCase):
         self.assertIsInstance(instance.bar(), mock.MagicMock)
 
 
-class TestMockPatchObject(utils.BaseTestCase):
+class TestMockPatchObject(base.BaseTestCase):
     def test_mock_patch_object_with_replacement(self):
         self.useFixture(mockpatch.PatchObject(Foo, 'bar', mocking_bar))
         instance = Foo()
