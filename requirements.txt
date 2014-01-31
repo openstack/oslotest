@@ -1,0 +1,3 @@
+fixtures>=0.3.14
+testtools>=0.9.32
+mock>=1.0
