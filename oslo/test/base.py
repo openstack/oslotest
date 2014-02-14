@@ -35,7 +35,6 @@ class BaseTestCase(testtools.TestCase):
         self._fake_logs()
         self.useFixture(fixtures.NestedTempfile())
         self.useFixture(fixtures.TempHomeDir())
-        self.tempdirs = []
 
     def _set_timeout(self):
         test_timeout = os.environ.get('OS_TEST_TIMEOUT', 0)
