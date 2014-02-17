@@ -1,0 +1,15 @@
+hacking>=0.8.0,<0.9
+
+discover
+python-subunit
+testrepository>=0.0.17
+testscenarios>=0.4
+
+# when we can require tox>= 1.4, this can go into tox.ini:
+#  [testenv:cover]
+#  deps = {[testenv]deps} coverage
+coverage>=3.6
+
+# this is required for the docs build jobs
+sphinx>=1.1.2,<1.2
+oslosphinx

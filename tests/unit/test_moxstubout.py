@@ -1,3 +1,5 @@
+# Copyright 2014 IBM Corp.
+#
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
 #    a copy of the License at
@@ -10,5 +12,21 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import six
-six.add_move(six.MovedModule('mox', 'mox', 'mox3.mox'))
+from oslo.test import base
+from oslo.test import moxstubout
+
+
+class TestMoxStubout(base.BaseTestCase):
+
+    def _stubable(self):
+        pass
+
+    def test_basic_stubout(self):
+        f = self.useFixture(moxstubout.MoxStubout())
+        before = TestMoxStubout._stubable
+        f.mox.StubOutWithMock(TestMoxStubout, '_stubable')
+        after = TestMoxStubout._stubable
+        self.assertNotEqual(before, after)
+        f.cleanUp()
+        after2 = TestMoxStubout._stubable
+        self.assertEqual(before, after2)
