@@ -12,8 +12,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from oslo.test import base
-from oslo.test import moxstubout
+from oslotest import base
+from oslotest import moxstubout
 
 
 class TestMoxStubout(base.BaseTestCase):

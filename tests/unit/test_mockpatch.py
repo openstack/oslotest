@@ -15,8 +15,8 @@
 
 import mock
 
-from oslo.test import base
-from oslo.test import mockpatch
+from oslotest import base
+from oslotest import mockpatch
 
 
 class Foo(object):
