@@ -61,7 +61,7 @@ class BaseTestCase(testtools.TestCase):
             level = logging.INFO
         capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
         if capture_logs:
-            self.useFixture(
+            self.logger = self.useFixture(
                 fixtures.FakeLogger(
                     format=_LOG_FORMAT,
                     level=level,
