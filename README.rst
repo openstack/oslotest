@@ -34,8 +34,36 @@ in the openstack-infra/config git repository and add sections like:
        branch-designator: ''
        branch-override: default
 
-To the ``jobs`` list for your project. Refer to
+to the ``jobs`` list for your project. Refer to
 https://review.openstack.org/#/c/76381 for an example.
+
+Then update ``modules/openstack_project/files/zuul/layout.yaml`` by
+adding the new check test to the global list of jobs (to make it
+non-voting to start), and then to your project and to oslo.test.
+
+::
+
+  - name: check-oslo.test-dsvm-oslo.messaging
+    voting: false
+
+::
+
+    - name: openstack/oslo.messaging
+      ...
+      check:
+      ...
+        - check-oslo.test-dsvm-oslo.messaging
+      ...
+
+::
+
+    - name: openstack/oslo.test
+      ...
+      check:
+      ...
+        - check-oslo.test-dsvm-oslo.messaging
+      ...
+
 
 Locally
 -------
