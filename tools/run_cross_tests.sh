@@ -13,13 +13,15 @@ venv="$2"
 
 tox_envbin=$project_dir/.tox/$venv/bin
 
+our_name=$(python setup.py --name)
+
 # Replace the pip-installed package with the version in our source
-# tree. Look to see if oslotest is already installed before trying to
-# uninstall it, to avoid failures from packages that do not use it
+# tree. Look to see if we are already installed before trying to
+# uninstall ourselves, to avoid failures from packages that do not use us
 # yet.
-if $tox_envbin/pip freeze | grep -q oslotest
+if $tox_envbin/pip freeze | grep -q $our_name
 then
-    $tox_envbin/pip uninstall -y oslotest
+    $tox_envbin/pip uninstall -y $our_name
 fi
 $tox_envbin/pip install -U .
 
