@@ -55,10 +55,9 @@ class BaseTestCase(testtools.TestCase):
             self.useFixture(fixtures.MonkeyPatch('sys.stderr', stderr))
 
     def _fake_logs(self):
+        level = None
         if os.environ.get('OS_DEBUG') in _TRUE_VALUES:
             level = logging.DEBUG
-        else:
-            level = logging.INFO
         capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
         if capture_logs:
             self.logger = self.useFixture(
