@@ -13,6 +13,7 @@
 #    under the License.
 
 import logging
+import unittest
 
 import mock
 import testtools
@@ -71,3 +72,23 @@ class TestBaseTestCase(testtools.TestCase):
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_calls('OS_DEBUG')
         self.assertEqual(fixture_mock.call_count, 1)
+
+    def test_mock_patch_cleanup_on_teardown(self):
+        # create an object and save its reference
+        class Sub(object):
+            pass
+
+        obj = Sub()
+        obj.value = obj.backup = object()
+
+        # patch the object
+        mock.patch.object(obj, 'value').start()
+        self.assertNotEqual(obj.value, obj.backup)
+
+        # run a test case
+        loader = unittest.defaultTestLoader
+        suite = loader.loadTestsFromTestCase(self.FakeTestCase)
+        suite.run(unittest.TestResult())
+
+        # check that mock patches are cleaned up
+        self.assertEqual(obj.value, obj.backup)
