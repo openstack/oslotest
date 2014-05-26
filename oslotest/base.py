@@ -57,6 +57,15 @@ class BaseTestCase(testtools.TestCase):
     change the ``HOME`` environment variable to point to a temporary
     location.
 
+    PLEASE NOTE:
+    Usage of this class may change the log level globally by setting the
+    environment variable ``OS_DEBUG``. A mock of ``time.time`` will be called
+    many more times than might be expected because it's called often by the
+    logging module. A usage of such a mock should be avoided when a test needs
+    to verify logging behavior or counts the number of invocations. A
+    workaround is to overload the ``_fake_logs`` function in a base class but
+    this will deactivate fake logging globally.
+
     .. _fixtures: https://pypi.python.org/pypi/fixtures
 
     """
