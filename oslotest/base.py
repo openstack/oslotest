@@ -28,6 +28,38 @@ _LOG_FORMAT = "%(levelname)8s [%(name)s] %(message)s"
 
 
 class BaseTestCase(testtools.TestCase):
+    """Base class for unit test classes.
+
+    If the environment variable ``OS_TEST_TIMEOUT`` is set to an
+    integer value, a timer is configured to control how long
+    individual test cases can run. This lets tests fail for taking too
+    long, and prevents deadlocks from completely hanging test runs.
+
+    If the environment variable ``OS_STDOUT_CAPTURE`` is set, a fake
+    stream replaces ``sys.stdout`` so the test can look at the output
+    it produces.
+
+    If the environment variable ``OS_STDERR_CAPTURE`` is set, a fake
+    stream replaces ``sys.stderr`` so the test can look at the output
+    it produces.
+
+    If the environment variable ``OS_DEBUG`` is set to a true value,
+    debug logging is enabled.
+
+    If the environment variable ``OS_LOG_CAPTURE`` is set to a true
+    value, a logging fixture is installed to capture the log output.
+
+    Uses the fixtures_ module to configure a :class:`NestedTempFile`
+    to ensure that all temporary files are created in an isolated
+    location.
+
+    Uses the fixtures_ module to configure a :class:`TempHomeDir` to
+    change the ``HOME`` environment variable to point to a temporary
+    location.
+
+    .. _fixtures: https://pypi.python.org/pypi/fixtures
+
+    """
 
     def setUp(self):
         super(BaseTestCase, self).setUp()
@@ -73,6 +105,14 @@ class BaseTestCase(testtools.TestCase):
             logging.basicConfig(format=_LOG_FORMAT, level=level)
 
     def create_tempfiles(self, files, ext='.conf'):
+        """Safely create temporary files.
+
+        :param files: Sequence of tuples containing (filename, file_contents).
+        :type files: list of tuple
+        :param ext: File name extension for the temporary file.
+        :type ext: str
+        :return: A list of str with the names of the files created.
+        """
         tempfiles = []
         for (basename, contents) in files:
             if not os.path.isabs(basename):
