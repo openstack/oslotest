@@ -16,7 +16,6 @@
 # under the License.
 
 import fixtures
-
 from six.moves import mox
 
 

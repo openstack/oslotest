@@ -1,4 +1,4 @@
-hacking>=0.8.0,<0.9
+hacking>=0.9.2,<0.10
 
 # when we can require tox>= 1.4, this can go into tox.ini:
 #  [testenv:cover]
