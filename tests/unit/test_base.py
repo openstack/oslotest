@@ -15,7 +15,7 @@
 import logging
 import unittest
 
-import mock
+from six.moves import mock
 import testtools
 
 from oslotest import base

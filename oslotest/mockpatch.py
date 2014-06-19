@@ -16,7 +16,7 @@
 # under the License.
 
 import fixtures
-import mock
+from six.moves import mock
 
 
 class PatchObject(fixtures.Fixture):

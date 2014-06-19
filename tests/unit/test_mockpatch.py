@@ -13,7 +13,7 @@
 #    under the License.
 
 
-import mock
+from six.moves import mock
 
 from oslotest import base
 from oslotest import mockpatch

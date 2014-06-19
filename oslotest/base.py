@@ -20,7 +20,7 @@ import os
 import tempfile
 
 import fixtures
-import mock
+from six.moves import mock
 import testtools
 
 _TRUE_VALUES = ('True', 'true', '1', 'yes')
