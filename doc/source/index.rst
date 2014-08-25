@@ -18,6 +18,7 @@ Contents
    installation
    api
    testing
+   features
    contributing
 
 Indices and tables
