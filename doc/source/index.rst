@@ -7,14 +7,17 @@
  Welcome to oslotest's documentation!
 ======================================
 
-Contents:
+OpenStack test framework and test fixtures.
+
+Contents
+========
 
 .. toctree::
    :maxdepth: 2
 
-   readme
    installation
    api
+   testing
    contributing
 
 Indices and tables
