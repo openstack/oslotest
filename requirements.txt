@@ -1,6 +1,7 @@
 discover
 fixtures>=0.3.14
 python-subunit>=0.0.18
+six>=1.7.0
 testrepository>=0.0.18
 testscenarios>=0.4
 testtools>=0.9.34
