@@ -14,4 +14,4 @@ import six
 
 
 six.add_move(six.MovedModule('mock', 'mock', 'unittest.mock'))
-six.add_move(six.MovedModule('mox', 'mox', 'mox3.mox'))
+six.add_move(six.MovedModule('mox', 'mox3.mox', 'mox3.mox'))
