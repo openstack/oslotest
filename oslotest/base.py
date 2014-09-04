@@ -70,6 +70,15 @@ class BaseTestCase(testtools.TestCase):
 
     """
 
+    def __init__(self, *args, **kwds):
+        super(BaseTestCase, self).__init__(*args, **kwds)
+        # Ensure that the mock.patch.stopall cleanup is registered
+        # before any setUp() methods have a chance to register other
+        # things to be cleaned up, so it is called last. This allows
+        # tests to register their own cleanups with a mock.stop method
+        # so those mocks are not included in the stopall set.
+        self.addCleanup(mock.patch.stopall)
+
     def setUp(self):
         super(BaseTestCase, self).setUp()
         self._set_timeout()
@@ -77,7 +86,6 @@ class BaseTestCase(testtools.TestCase):
         self._fake_logs()
         self.useFixture(fixtures.NestedTempfile())
         self.useFixture(fixtures.TempHomeDir())
-        self.addCleanup(mock.patch.stopall)
 
     def _set_timeout(self):
         test_timeout = os.environ.get('OS_TEST_TIMEOUT', 0)
