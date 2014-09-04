@@ -15,6 +15,7 @@ oslotest.mockpatch
 
 .. automodule:: oslotest.mockpatch
    :members:
+   :special-members:
 
 oslotest.moxstubout
 ===================

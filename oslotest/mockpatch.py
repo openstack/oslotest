@@ -36,7 +36,6 @@ class PatchObject(fixtures.Fixture):
 
 
 class Patch(fixtures.Fixture):
-
     """Deal with code around mock.patch."""
 
     def __init__(self, obj, new=mock.DEFAULT, **kwargs):
@@ -47,5 +46,35 @@ class Patch(fixtures.Fixture):
     def setUp(self):
         super(Patch, self).setUp()
         _p = mock.patch(self.obj, self.new, **self.kwargs)
+        self.mock = _p.start()
+        self.addCleanup(_p.stop)
+
+
+class Multiple(fixtures.Fixture):
+    """Deal with code around mock.patch.multiple."""
+
+    # Default value to trigger a MagicMock to be created for a named
+    # attribute.
+    DEFAULT = mock.DEFAULT
+
+    def __init__(self, obj, **kwargs):
+        """Initialize the mocks
+
+        Pass name=value to replace obj.name with value.
+
+        Pass name=Multiple.DEFAULT to replace obj.name with a
+        MagicMock instance.
+
+        :param obj: Object or name containing values being mocked.
+        :type obj: str or object
+        :param kwargs: names and values of attributes of obj to be mocked.
+
+        """
+        self.obj = obj
+        self.kwargs = kwargs
+
+    def setUp(self):
+        super(Multiple, self).setUp()
+        _p = mock.patch.multiple(self.obj, **self.kwargs)
         self.mock = _p.start()
         self.addCleanup(_p.stop)
