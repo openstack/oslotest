@@ -19,9 +19,11 @@ from six.moves import mock
 import testtools
 
 from oslotest import base
+from oslotest import mockpatch
 
 
 class TestBaseTestCase(testtools.TestCase):
+
     class FakeTestCase(base.BaseTestCase):
         def test_fake_test(self):
             pass
@@ -92,3 +94,30 @@ class TestBaseTestCase(testtools.TestCase):
 
         # check that mock patches are cleaned up
         self.assertEqual(obj.value, obj.backup)
+
+
+class TestManualMock(base.BaseTestCase):
+
+    def setUp(self):
+        # Create a cleanup to undo a patch() call *before* calling the
+        # base class version of setup().
+        patcher = mock.patch('os.environ.keys')
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        super(TestManualMock, self).setUp()
+        self.useFixture(mockpatch.Patch('fixtures.Timeout'))
+        self.unstopped = mock.patch('os.environ.put')
+
+    def tearDown(self):
+        super(TestManualMock, self).tearDown()
+        self.assertRaises(
+            RuntimeError,
+            self.unstopped.stop,
+        )
+
+    def test_mock_patch_manually(self):
+        # Verify that if a test instance creates its own mock and
+        # calls start/stop itself we don't get an error.
+        patcher = mock.patch('os.environ.get')
+        patcher.start()
+        self.addCleanup(patcher.stop)
