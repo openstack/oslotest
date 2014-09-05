@@ -41,6 +41,20 @@ class TestMockPatch(base.BaseTestCase):
         self.assertIsInstance(instance.bar(), mock.MagicMock)
 
 
+class TestMockMultiple(base.BaseTestCase):
+    def test_mock_multiple_with_replacement(self):
+        self.useFixture(mockpatch.Multiple('%s.Foo' % (__name__),
+                                           bar=mocking_bar))
+        instance = Foo()
+        self.assertEqual(instance.bar(), 'mocked!')
+
+    def test_mock_patch_without_replacement(self):
+        self.useFixture(mockpatch.Multiple('%s.Foo' % (__name__),
+                                           bar=mockpatch.Multiple.DEFAULT))
+        instance = Foo()
+        self.assertIsInstance(instance.bar(), mock.MagicMock)
+
+
 class TestMockPatchObject(base.BaseTestCase):
     def test_mock_patch_object_with_replacement(self):
         self.useFixture(mockpatch.PatchObject(Foo, 'bar', mocking_bar))
