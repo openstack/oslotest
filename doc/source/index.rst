@@ -14,6 +14,7 @@ Contents
    testing
    features
    contributing
+   history
 
 Indices and tables
 ==================
