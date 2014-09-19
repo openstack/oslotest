@@ -13,6 +13,7 @@ Contents
    api
    testing
    features
+   resources
    contributing
 
 Indices and tables
