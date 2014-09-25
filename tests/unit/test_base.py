@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Copyright 2014 Deutsche Telekom AG
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -13,8 +15,10 @@
 #    under the License.
 
 import logging
+import os
 import unittest
 
+import six
 from six.moves import mock
 import testtools
 
@@ -121,3 +125,52 @@ class TestManualMock(base.BaseTestCase):
         patcher = mock.patch('os.environ.get')
         patcher.start()
         self.addCleanup(patcher.stop)
+
+
+class TestTempFiles(base.BaseTestCase):
+    def test_create_unicode_files(self):
+        files = [["no_approve", u'ಠ_ಠ']]
+        temps = self.create_tempfiles(files)
+        self.assertEqual(1, len(temps))
+        with open(temps[0], 'rb') as f:
+            contents = f.read()
+        self.assertEqual(u'ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
+
+    def test_create_unicode_files_encoding(self):
+        files = [["embarrassed", u'⊙﹏⊙', 'utf-8']]
+        temps = self.create_tempfiles(files)
+        self.assertEqual(1, len(temps))
+        with open(temps[0], 'rb') as f:
+            contents = f.read()
+        self.assertEqual(u'⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
+
+    def test_create_unicode_files_multi_encoding(self):
+        files = [
+            ["embarrassed", u'⊙﹏⊙', 'utf-8'],
+            ['abc', 'abc', 'ascii'],
+        ]
+        temps = self.create_tempfiles(files)
+        self.assertEqual(2, len(temps))
+        for i, (basename, raw_contents, raw_encoding) in enumerate(files):
+            with open(temps[i], 'rb') as f:
+                contents = f.read()
+            if not isinstance(raw_contents, six.text_type):
+                raw_contents = six.text_type(raw_contents,
+                                             encoding=raw_encoding)
+            self.assertEqual(raw_contents,
+                             six.text_type(contents, encoding=raw_encoding))
+
+    def test_create_bad_encoding(self):
+        files = [["hrm", u'ಠ~ಠ', 'ascii']]
+        self.assertRaises(UnicodeError, self.create_tempfiles, files)
+
+    def test_prefix(self):
+        files = [["testing", '']]
+        temps = self.create_tempfiles(files)
+        self.assertEqual(1, len(temps))
+        basename = os.path.basename(temps[0])
+        self.assertTrue(basename.startswith('testing'))
+
+    def test_wrong_length(self):
+        files = [["testing"]]
+        self.assertRaises(ValueError, self.create_tempfiles, files)

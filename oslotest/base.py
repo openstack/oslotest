@@ -20,6 +20,7 @@ import os
 import tempfile
 
 import fixtures
+import six
 from six.moves import mock
 import testtools
 
@@ -121,17 +122,29 @@ class BaseTestCase(testtools.TestCase):
         else:
             logging.basicConfig(format=_LOG_FORMAT, level=level)
 
-    def create_tempfiles(self, files, ext='.conf'):
+    def create_tempfiles(self, files, ext='.conf', default_encoding='utf-8'):
         """Safely create temporary files.
 
         :param files: Sequence of tuples containing (filename, file_contents).
         :type files: list of tuple
         :param ext: File name extension for the temporary file.
         :type ext: str
+        :param default_encoding: Default file content encoding when it is
+                                 not provided, used to decode the tempfile
+                                 contents from a text string into a binary
+                                 string.
+        :type default_encoding: str
         :return: A list of str with the names of the files created.
         """
         tempfiles = []
-        for (basename, contents) in files:
+        for f in files:
+            if len(f) == 3:
+                basename, contents, encoding = f
+            else:
+                basename, contents = f
+                encoding = default_encoding
+            if isinstance(contents, six.text_type):
+                contents = contents.encode(encoding)
             if not os.path.isabs(basename):
                 (fd, path) = tempfile.mkstemp(prefix=basename, suffix=ext)
             else:
