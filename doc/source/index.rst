@@ -15,6 +15,7 @@ Contents
    features
    resources
    contributing
+   history
 
 Indices and tables
 ==================
