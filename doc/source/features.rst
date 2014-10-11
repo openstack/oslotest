@@ -25,7 +25,22 @@ Update tox.ini
 Within the ``tox.ini`` file of your project add the following::
 
   [testenv:debug]
-  commands = oslo_debug_helper.sh {posargs}
+  commands = oslo_debug_helper {posargs}
+
+If the project name, and the module that precedes the tests directory do not
+match, then consider passing an argument to ``tox.ini``.
+
+For example, ``python-keystoneclient`` project has tests in
+``keystoneclient/tests``, thus it would have to pass in::
+
+  [testenv:debug]
+  commands = oslo_debug_helper -t keystoneclient/tests {posargs}
+
+Similarily, most ``oslo`` projects have the tests at the package level, it
+would have to pass in::
+
+  [testenv:debug]
+  commands = oslo_debug_helper -t tests {posargs}
 
 To run with tox:
 
