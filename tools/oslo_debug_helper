@@ -10,7 +10,7 @@
 # relative to the project directory. If no value is passed, it is assumed
 # to be packagename/tests.
 
-TMP_DIR=`mktemp -d` || exit 1
+TMP_DIR=`mktemp -d debug-$$-XXX` || exit 1
 trap "rm -rf $TMP_DIR" EXIT
 
 ALL_TESTS=$TMP_DIR/all_tests
