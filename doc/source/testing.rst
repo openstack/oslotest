@@ -26,5 +26,5 @@ to use:
 ::
 
   $ cd oslo.test
-  $ ./tools/run_cross_tests.sh ~/repos/openstack/oslo.config py27
+  $ ./tools/oslo_run_cross_tests ~/repos/openstack/oslo.config py27
 
