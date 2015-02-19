@@ -73,6 +73,13 @@ class BaseTestCase(testtools.TestCase):
 
     def __init__(self, *args, **kwds):
         super(BaseTestCase, self).__init__(*args, **kwds)
+
+        # This is the number of characters shown when two objects do not
+        # match for assertDictEqual, assertMultiLineEqual, and
+        # assertSequenceEqual. The default is 640 which is too
+        # low for comparing most dicts
+        self.maxDiff = 10000
+
         # Ensure that the mock.patch.stopall cleanup is registered
         # before any setUp() methods have a chance to register other
         # things to be cleaned up, so it is called last. This allows
