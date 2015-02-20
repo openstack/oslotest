@@ -22,7 +22,7 @@ import subprocess
 import sys
 
 from oslo_config import cfg
-import oslo_tool_config as tconfig
+from oslotest.tools import config as tconfig
 from pbr import packaging
 import pkg_resources
 
