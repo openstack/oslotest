@@ -43,6 +43,7 @@ our_name=$(python setup.py --name)
 # Build the egg-info, including the source file list,
 # so we install all of the files, even if the package
 # list or name has changed.
+rm -rf $(python setup.py --name).egg-info
 python setup.py egg_info
 
 # Replace the pip-installed package with the version in our source
