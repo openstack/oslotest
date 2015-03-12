@@ -31,8 +31,8 @@ class PatchObject(fixtures.Fixture):
     def setUp(self):
         super(PatchObject, self).setUp()
         _p = mock.patch.object(self.obj, self.attr, self.new, **self.kwargs)
-        self.mock = _p.start()
         self.addCleanup(_p.stop)
+        self.mock = _p.start()
 
 
 class Patch(fixtures.Fixture):
@@ -46,8 +46,8 @@ class Patch(fixtures.Fixture):
     def setUp(self):
         super(Patch, self).setUp()
         _p = mock.patch(self.obj, self.new, **self.kwargs)
-        self.mock = _p.start()
         self.addCleanup(_p.stop)
+        self.mock = _p.start()
 
 
 class Multiple(fixtures.Fixture):
@@ -76,5 +76,5 @@ class Multiple(fixtures.Fixture):
     def setUp(self):
         super(Multiple, self).setUp()
         _p = mock.patch.multiple(self.obj, **self.kwargs)
-        self.mock = _p.start()
         self.addCleanup(_p.stop)
+        self.mock = _p.start()
