@@ -19,38 +19,31 @@ import fixtures
 from six.moves import mock
 
 
-class PatchObject(fixtures.Fixture):
+class _Base(fixtures.Fixture):
+    def setUp(self):
+        super(_Base, self).setUp()
+        _p = self._get_p()
+        self.addCleanup(_p.stop)
+        self.mock = _p.start()
+
+
+class PatchObject(_Base):
     """Deal with code around mock."""
 
     def __init__(self, obj, attr, new=mock.DEFAULT, **kwargs):
-        self.obj = obj
-        self.attr = attr
-        self.kwargs = kwargs
-        self.new = new
-
-    def setUp(self):
-        super(PatchObject, self).setUp()
-        _p = mock.patch.object(self.obj, self.attr, self.new, **self.kwargs)
-        self.addCleanup(_p.stop)
-        self.mock = _p.start()
+        super(PatchObject, self).__init__()
+        self._get_p = lambda: mock.patch.object(obj, attr, new, **kwargs)
 
 
-class Patch(fixtures.Fixture):
+class Patch(_Base):
     """Deal with code around mock.patch."""
 
     def __init__(self, obj, new=mock.DEFAULT, **kwargs):
-        self.obj = obj
-        self.kwargs = kwargs
-        self.new = new
-
-    def setUp(self):
-        super(Patch, self).setUp()
-        _p = mock.patch(self.obj, self.new, **self.kwargs)
-        self.addCleanup(_p.stop)
-        self.mock = _p.start()
+        super(Patch, self).__init__()
+        self._get_p = lambda: mock.patch(obj, new, **kwargs)
 
 
-class Multiple(fixtures.Fixture):
+class Multiple(_Base):
     """Deal with code around mock.patch.multiple."""
 
     # Default value to trigger a MagicMock to be created for a named
@@ -70,11 +63,5 @@ class Multiple(fixtures.Fixture):
         :param kwargs: names and values of attributes of obj to be mocked.
 
         """
-        self.obj = obj
-        self.kwargs = kwargs
-
-    def setUp(self):
-        super(Multiple, self).setUp()
-        _p = mock.patch.multiple(self.obj, **self.kwargs)
-        self.addCleanup(_p.stop)
-        self.mock = _p.start()
+        super(Multiple, self).__init__()
+        self._get_p = lambda: mock.patch.multiple(obj, **kwargs)
