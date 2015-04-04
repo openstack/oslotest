@@ -2,7 +2,8 @@
  oslotest
 ==========
 
-OpenStack test framework and test fixtures.
+The Oslo Test framework provides common fixtures, support for debugging, and
+better support for mocking results.
 
 * Free software: Apache license
 * Documentation: http://docs.openstack.org/developer/oslotest
