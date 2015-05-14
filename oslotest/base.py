@@ -20,6 +20,8 @@ import os
 import tempfile
 
 import fixtures
+from oslotest import timeout
+
 import six
 from six.moves import mock
 import testtools
@@ -96,14 +98,7 @@ class BaseTestCase(testtools.TestCase):
         self.useFixture(fixtures.TempHomeDir())
 
     def _set_timeout(self):
-        test_timeout = os.environ.get('OS_TEST_TIMEOUT', 0)
-        try:
-            test_timeout = int(test_timeout)
-        except ValueError:
-            # If timeout value is invalid do not set a timeout.
-            test_timeout = 0
-        if test_timeout > 0:
-            self.useFixture(fixtures.Timeout(test_timeout, gentle=True))
+        self.useFixture(timeout.Timeout())
 
     def _fake_output(self):
         if os.environ.get('OS_STDOUT_CAPTURE') in _TRUE_VALUES:

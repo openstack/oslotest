@@ -33,7 +33,7 @@ class TestBaseTestCase(testtools.TestCase):
             pass
 
     @mock.patch('os.environ.get')
-    @mock.patch.object(FakeTestCase, 'useFixture')
+    @mock.patch('oslotest.timeout.Timeout.useFixture')
     @mock.patch('fixtures.Timeout')
     def test_timeout(self, fixture_timeout_mock, fixture_mock, env_get_mock):
         env_get_mock.return_value = 1
