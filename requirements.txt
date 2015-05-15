@@ -11,3 +11,4 @@ testscenarios>=0.4
 testtools>=0.9.36,!=1.2.0
 mock>=1.0
 mox3>=0.7.0
+os-client-config
