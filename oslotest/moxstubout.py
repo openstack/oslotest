@@ -16,7 +16,7 @@
 # under the License.
 
 import fixtures
-from six.moves import mox
+from mox3 import mox
 
 
 class MoxStubout(fixtures.Fixture):
