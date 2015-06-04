@@ -9,6 +9,27 @@
 # Fail the build if any command fails
 set -e
 
+function usage {
+    cat - <<EOF
+ERROR: Missing argument(s)
+
+Usage:
+
+  oslo_run_cross_tests PROJECT_DIR VIRTUAL_ENV [POSARGS]
+
+Example, run the python 2.7 tests for python-neutronclient:
+
+  oslo_run_cross_tests /opt/stack/python-neutronclient py27
+  oslo_run_cross_tests /opt/stack/nova py27 xenapi
+
+EOF
+    exit $1
+}
+
+if [[ $# -lt 2 ]]; then
+    usage 1
+fi
+
 project_dir="$1"
 shift
 venv="$1"
@@ -17,20 +38,7 @@ posargs="$*"
 
 if [ -z "$project_dir" -o -z "$venv" ]
 then
-    cat - <<EOF
-ERROR: Missing argument(s)
-
-Usage:
-
-  $0 PROJECT_DIR VIRTUAL_ENV [POSARGS]
-
-Example, run the python 2.7 tests for python-neutronclient:
-
-  $0 /opt/stack/python-neutronclient py27
-  $0 /opt/stack/nova py27 xenapi
-
-EOF
-    exit 1
+    usage 2
 fi
 
 # Set up the virtualenv without running the tests
