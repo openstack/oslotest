@@ -28,7 +28,13 @@ class _Base(fixtures.Fixture):
 
 
 class PatchObject(_Base):
-    """Deal with code around mock."""
+    """Deal with code around mock.
+
+    .. py:attribute:: mock
+
+        The mock.
+
+    """
 
     def __init__(self, obj, attr, new=mock.DEFAULT, **kwargs):
         super(PatchObject, self).__init__()
@@ -36,7 +42,13 @@ class PatchObject(_Base):
 
 
 class Patch(_Base):
-    """Deal with code around mock.patch."""
+    """Deal with code around mock.
+
+    .. py:attribute:: mock
+
+        The mock.
+
+    """
 
     def __init__(self, obj, new=mock.DEFAULT, **kwargs):
         super(Patch, self).__init__()
@@ -44,24 +56,26 @@ class Patch(_Base):
 
 
 class Multiple(_Base):
-    """Deal with code around mock.patch.multiple."""
+    """Deal with code around mock.patch.multiple.
 
-    # Default value to trigger a MagicMock to be created for a named
-    # attribute.
+    Pass name=value to replace obj.name with value.
+
+    Pass name= :py:attr:`Multiple.DEFAULT` to replace obj.name with a MagicMock
+    instance.
+
+    :param obj: Object or name containing values being mocked.
+    :type obj: str or object
+    :param kwargs: names and values of attributes of obj to be mocked.
+
+    .. py:attribute:: mock
+
+        The mock.
+
+    """
+
     DEFAULT = mock.DEFAULT
+    """Triggers a MagicMock to be created for a named attribute."""
 
     def __init__(self, obj, **kwargs):
-        """Initialize the mocks
-
-        Pass name=value to replace obj.name with value.
-
-        Pass name=Multiple.DEFAULT to replace obj.name with a
-        MagicMock instance.
-
-        :param obj: Object or name containing values being mocked.
-        :type obj: str or object
-        :param kwargs: names and values of attributes of obj to be mocked.
-
-        """
         super(Multiple, self).__init__()
         self._get_p = lambda: mock.patch.multiple(obj, **kwargs)
