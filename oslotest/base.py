@@ -15,15 +15,12 @@
 
 """Common utilities used in testing"""
 
-import os
-import tempfile
-
 import fixtures
+from oslotest import createfile
 from oslotest import log
 from oslotest import output
 from oslotest import timeout
 
-import six
 from six.moves import mock
 import testtools
 
@@ -128,16 +125,11 @@ class BaseTestCase(testtools.TestCase):
             else:
                 basename, contents = f
                 encoding = default_encoding
-            if isinstance(contents, six.text_type):
-                contents = contents.encode(encoding)
-            if not os.path.isabs(basename):
-                (fd, path) = tempfile.mkstemp(prefix=basename, suffix=ext)
-            else:
-                path = basename + ext
-                fd = os.open(path, os.O_CREAT | os.O_WRONLY)
-            tempfiles.append(path)
-            try:
-                os.write(fd, contents)
-            finally:
-                os.close(fd)
+            fix = self.useFixture(createfile.CreateFileWithContent(
+                filename=basename,
+                contents=contents,
+                ext=ext,
+                encoding=encoding,
+            ))
+            tempfiles.append(fix.path)
         return tempfiles

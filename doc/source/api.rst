@@ -10,6 +10,13 @@ oslotest.base
 .. autoclass:: oslotest.base.BaseTestCase
    :members:
 
+oslotest.createfile
+===================
+
+.. automodule:: oslotest.createfile
+   :members:
+   :special-members:
+
 oslotest.log
 ============
 
