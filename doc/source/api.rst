@@ -23,6 +23,12 @@ oslotest.moxstubout
 .. automodule:: oslotest.moxstubout
    :members:
 
+oslotest.output
+===================
+
+.. automodule:: oslotest.output
+   :members:
+
 oslotest.timeout
 ================
 

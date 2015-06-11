@@ -99,6 +99,22 @@ class TestBaseTestCase(testtools.TestCase):
         # check that mock patches are cleaned up
         self.assertEqual(obj.value, obj.backup)
 
+    @mock.patch('os.environ')
+    def test_capture_output_disabled(self, mock_env):
+        mock_env.get.return_value = ''
+        tc = self.FakeTestCase("test_fake_test")
+        tc.setUp()
+        self.assertIs(None, tc.output_fixture.stdout)
+        self.assertIs(None, tc.output_fixture.stderr)
+
+    @mock.patch('os.environ')
+    def test_enabled(self, mock_env):
+        mock_env.get.return_value = 'True'
+        tc = self.FakeTestCase("test_fake_test")
+        tc.setUp()
+        self.assertIsNot(None, tc.output_fixture.stdout)
+        self.assertIsNot(None, tc.output_fixture.stderr)
+
 
 class TestManualMock(base.BaseTestCase):
 

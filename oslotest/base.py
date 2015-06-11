@@ -20,6 +20,7 @@ import os
 import tempfile
 
 import fixtures
+from oslotest import output
 from oslotest import timeout
 
 import six
@@ -101,12 +102,7 @@ class BaseTestCase(testtools.TestCase):
         self.useFixture(timeout.Timeout())
 
     def _fake_output(self):
-        if os.environ.get('OS_STDOUT_CAPTURE') in _TRUE_VALUES:
-            stdout = self.useFixture(fixtures.StringStream('stdout')).stream
-            self.useFixture(fixtures.MonkeyPatch('sys.stdout', stdout))
-        if os.environ.get('OS_STDERR_CAPTURE') in _TRUE_VALUES:
-            stderr = self.useFixture(fixtures.StringStream('stderr')).stream
-            self.useFixture(fixtures.MonkeyPatch('sys.stderr', stderr))
+        self.output_fixture = self.useFixture(output.CaptureOutput())
 
     def _fake_logs(self):
         level = None
