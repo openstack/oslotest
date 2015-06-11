@@ -10,6 +10,13 @@ oslotest.base
 .. autoclass:: oslotest.base.BaseTestCase
    :members:
 
+oslotest.log
+============
+
+.. automodule:: oslotest.log
+   :members:
+   :special-members:
+
 oslotest.mockpatch
 ==================
 

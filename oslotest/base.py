@@ -15,11 +15,11 @@
 
 """Common utilities used in testing"""
 
-import logging
 import os
 import tempfile
 
 import fixtures
+from oslotest import log
 from oslotest import output
 from oslotest import timeout
 
@@ -105,20 +105,7 @@ class BaseTestCase(testtools.TestCase):
         self.output_fixture = self.useFixture(output.CaptureOutput())
 
     def _fake_logs(self):
-        level = None
-        if os.environ.get('OS_DEBUG') in _TRUE_VALUES:
-            level = logging.DEBUG
-        capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
-        if capture_logs:
-            self.logger = self.useFixture(
-                fixtures.FakeLogger(
-                    format=_LOG_FORMAT,
-                    level=level,
-                    nuke_handlers=capture_logs,
-                )
-            )
-        else:
-            logging.basicConfig(format=_LOG_FORMAT, level=level)
+        self.log_fixture = self.useFixture(log.ConfigureLogging())
 
     def create_tempfiles(self, files, ext='.conf', default_encoding='utf-8'):
         """Safely create temporary files.

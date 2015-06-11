@@ -44,24 +44,24 @@ class TestBaseTestCase(testtools.TestCase):
         self.assertEqual(fixture_mock.call_count, 1)
 
     @mock.patch('os.environ.get')
-    @mock.patch.object(FakeTestCase, 'useFixture')
-    def test_fake_logs_default(self, fixture_mock, env_get_mock):
+    def test_fake_logs_default(self, env_get_mock):
         # without debug and log capture
-        env_get_mock.side_effect = lambda value: {'OS_DEBUG': 0,
-                                                  'OS_LOG_CAPTURE': 0}[value]
+        env_get_mock.side_effect = lambda value, default=None: {
+            'OS_DEBUG': 0, 'OS_LOG_CAPTURE': 0}.get(value, default)
         tc = self.FakeTestCase("test_fake_test")
-        tc._fake_logs()
+        tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_calls('OS_DEBUG')
-        self.assertEqual(fixture_mock.call_count, 0)
+        self.assertFalse(tc.log_fixture.capture_logs)
+        self.assertIsNone(tc.log_fixture.logger)
 
     @mock.patch('os.environ.get')
     @mock.patch('logging.basicConfig')
     def test_fake_logs_with_debug(self, basic_logger_mock, env_get_mock):
-        env_get_mock.side_effect = lambda value: {'OS_DEBUG': 'True',
-                                                  'OS_LOG_CAPTURE': 0}[value]
+        env_get_mock.side_effect = lambda value, default=None: {
+            'OS_DEBUG': 'True', 'OS_LOG_CAPTURE': 0}.get(value, default)
         tc = self.FakeTestCase("test_fake_test")
-        tc._fake_logs()
+        tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_calls('OS_DEBUG')
         basic_logger_mock.assert_called_once_with(format=base._LOG_FORMAT,
@@ -74,10 +74,10 @@ class TestBaseTestCase(testtools.TestCase):
                                                   'OS_LOG_CAPTURE': 'True'
                                                   }[value]
         tc = self.FakeTestCase("test_fake_test")
-        tc._fake_logs()
+        tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_calls('OS_DEBUG')
-        self.assertEqual(fixture_mock.call_count, 1)
+        self.assertEqual(fixture_mock.call_count, 5)
 
     def test_mock_patch_cleanup_on_teardown(self):
         # create an object and save its reference
