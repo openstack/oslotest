@@ -16,6 +16,8 @@ import os
 import fixtures
 
 _TRUE_VALUES = ('True', 'true', '1', 'yes')
+_FALSE_VALUES = ('False', 'false', '0', 'no')
+_LOG_LEVELS = ('DEBUG', 'INFO', 'WARN', 'WARNING', 'ERROR', 'CRITICAL')
 
 
 class ConfigureLogging(fixtures.Fixture):
@@ -23,9 +25,12 @@ class ConfigureLogging(fixtures.Fixture):
 
     The behavior is managed through two environment variables. If
     ``OS_DEBUG`` is true then the logging level is set to debug. If
-    ``OS_LOG_CAPTURE`` is true a FakeLogger is configured.
+    ``OS_LOG_CAPTURE`` is true a FakeLogger is configured. Alternatively,
+    ``OS_DEBUG`` can be set to an explicit log level, such as ``INFO``.
 
-    "True" values include ``True``, ``true``, ``1``, and ``yes``.
+    "True" values include ``True``, ``true``, ``1`` and ``yes``.
+    Valid log levels include ``DEBUG``, ``INFO``, ``WARNING``, ``ERROR``
+    and ``CRITICAL``.
 
     .. py:attribute:: logger
 
@@ -34,7 +39,7 @@ class ConfigureLogging(fixtures.Fixture):
     .. py:attribute:: level
 
        ``logging.DEBUG`` if debug logging is enabled, otherwise
-       ``None``.
+       the log level specified by ``OS_DEBUG``, otherwise ``None``.
 
     :param format: The logging format string to use.
 
@@ -47,8 +52,13 @@ class ConfigureLogging(fixtures.Fixture):
         super(ConfigureLogging, self).__init__()
         self._format = format
         self.level = None
-        if os.environ.get('OS_DEBUG') in _TRUE_VALUES:
+        _os_debug = os.environ.get('OS_DEBUG')
+        if _os_debug in _TRUE_VALUES:
             self.level = logging.DEBUG
+        elif _os_debug in _LOG_LEVELS:
+            self.level = getattr(logging, _os_debug)
+        elif _os_debug and _os_debug not in _FALSE_VALUES:
+            raise ValueError('OS_DEBUG=%s is invalid.' % (_os_debug))
         self.capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
         self.logger = None
 

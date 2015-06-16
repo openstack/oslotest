@@ -45,7 +45,8 @@ class BaseTestCase(testtools.TestCase):
     it produces.
 
     If the environment variable ``OS_DEBUG`` is set to a true value,
-    debug logging is enabled.
+    debug logging is enabled. Alternatively, the ``OS_DEBUG``
+    environment variable can be set to a valid log level.
 
     If the environment variable ``OS_LOG_CAPTURE`` is set to a true
     value, a logging fixture is installed to capture the log output.
