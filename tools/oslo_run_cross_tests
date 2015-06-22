@@ -42,7 +42,7 @@ then
 fi
 
 # Set up the virtualenv without running the tests
-(cd $project_dir && tox --notest -e $venv)
+(cd $project_dir && tox --notest -r -e $venv)
 
 tox_envbin=$project_dir/.tox/$venv/bin
 
