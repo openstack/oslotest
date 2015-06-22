@@ -2,7 +2,7 @@
 # of appearance. Changing the order has an impact on the overall integration
 # process, which may cause wedges in the gate later.
 
-hacking>=0.10.0,<0.11
+hacking<0.11,>=0.10.0
 
 # when we can require tox>= 1.4, this can go into tox.ini:
 #  [testenv:cover]
@@ -10,5 +10,5 @@ hacking>=0.10.0,<0.11
 coverage>=3.6
 
 # this is required for the docs build jobs
-sphinx>=1.1.2,!=1.2.0,!=1.3b1,<1.3
-oslosphinx>=2.5.0  # Apache-2.0
+sphinx!=1.2.0,!=1.3b1,<1.3,>=1.1.2
+oslosphinx>=2.5.0 # Apache-2.0
