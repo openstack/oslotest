@@ -13,6 +13,7 @@ Contents
    api
    testing
    features
+   cross-testing
    resources
    contributing
    history
