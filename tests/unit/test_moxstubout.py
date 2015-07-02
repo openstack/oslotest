@@ -30,3 +30,4 @@ class TestMoxStubout(base.BaseTestCase):
         f.cleanUp()
         after2 = TestMoxStubout._stubable
         self.assertEqual(before, after2)
+        f._clear_cleanups()
