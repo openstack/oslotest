@@ -52,7 +52,7 @@ class TestBaseTestCase(testtools.TestCase):
         tc = self.FakeTestCase("test_fake_test")
         tc._fake_logs()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
-        env_get_mock.assert_any_calls('OS_DEBUG')
+        env_get_mock.assert_any_call('OS_DEBUG')
         self.assertEqual(fixture_mock.call_count, 0)
 
     @mock.patch('os.environ.get')
@@ -63,7 +63,7 @@ class TestBaseTestCase(testtools.TestCase):
         tc = self.FakeTestCase("test_fake_test")
         tc._fake_logs()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
-        env_get_mock.assert_any_calls('OS_DEBUG')
+        env_get_mock.assert_any_call('OS_DEBUG')
         basic_logger_mock.assert_called_once_with(format=base._LOG_FORMAT,
                                                   level=logging.DEBUG)
 
@@ -76,7 +76,7 @@ class TestBaseTestCase(testtools.TestCase):
         tc = self.FakeTestCase("test_fake_test")
         tc._fake_logs()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
-        env_get_mock.assert_any_calls('OS_DEBUG')
+        env_get_mock.assert_any_call('OS_DEBUG')
         self.assertEqual(fixture_mock.call_count, 1)
 
     def test_mock_patch_cleanup_on_teardown(self):
