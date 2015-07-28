@@ -63,6 +63,32 @@ class ConfigureLoggingTestCase(testtools.TestCase):
             level=logging.WARNING)
 
     @mock.patch('os.environ.get')
+    @mock.patch('logging.basicConfig')
+    def test_fake_logs_with_trace_int(self, basic_logger_mock, env_get_mock):
+        env_get_mock.side_effect = lambda value, default=None: {
+            'OS_DEBUG': '5', 'OS_LOG_CAPTURE': 0}.get(value, default)
+        f = log.ConfigureLogging()
+        f.setUp()
+        env_get_mock.assert_any_call('OS_LOG_CAPTURE')
+        env_get_mock.assert_any_call('OS_DEBUG')
+        basic_logger_mock.assert_called_once_with(
+            format=log.ConfigureLogging.DEFAULT_FORMAT,
+            level=5)
+
+    @mock.patch('os.environ.get')
+    @mock.patch('logging.basicConfig')
+    def test_fake_logs_with_debug_int(self, basic_logger_mock, env_get_mock):
+        env_get_mock.side_effect = lambda value, default=None: {
+            'OS_DEBUG': '10', 'OS_LOG_CAPTURE': 0}.get(value, default)
+        f = log.ConfigureLogging()
+        f.setUp()
+        env_get_mock.assert_any_call('OS_LOG_CAPTURE')
+        env_get_mock.assert_any_call('OS_DEBUG')
+        basic_logger_mock.assert_called_once_with(
+            format=log.ConfigureLogging.DEFAULT_FORMAT,
+            level=logging.DEBUG)
+
+    @mock.patch('os.environ.get')
     def test_fake_logs_with_log_capture(self, env_get_mock):
         env_get_mock.side_effect = lambda value: {'OS_DEBUG': 0,
                                                   'OS_LOG_CAPTURE': 'True'
