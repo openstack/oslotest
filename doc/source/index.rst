@@ -3,9 +3,6 @@ Welcome to oslotest's documentation!
 
 OpenStack test framework and test fixtures.
 
-Contents
-========
-
 .. toctree::
    :maxdepth: 2
 
@@ -15,7 +12,6 @@ Contents
    cross-testing
    resources
    contributing
-   history
 
 API
 ===
@@ -24,6 +20,14 @@ API
    :maxdepth: 1
 
    api/autoindex
+
+Release Notes
+=============
+
+.. toctree::
+   :maxdepth: 1
+
+   history
 
 Indices and tables
 ==================
