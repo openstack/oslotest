@@ -9,6 +9,7 @@
    testing
    features
    cross-testing
+   debugging
    resources
    contributing
 
