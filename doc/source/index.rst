@@ -10,13 +10,20 @@ Contents
    :maxdepth: 2
 
    installation
-   api
    testing
    features
    cross-testing
    resources
    contributing
    history
+
+API
+===
+
+.. toctree::
+   :maxdepth: 1
+
+   api/autoindex
 
 Indices and tables
 ==================

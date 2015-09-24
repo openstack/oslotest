@@ -29,6 +29,7 @@ extensions = [
 # autodoc generation is a bit aggressive and a nuisance when doing heavy
 # text edit cycles.
 # execute "export SPHINX_DEBUG=1" in your terminal to disable
+modindex_common_prefix = ['oslotest.']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
