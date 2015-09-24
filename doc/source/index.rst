@@ -1,7 +1,6 @@
-Welcome to oslotest's documentation!
-====================================
-
-OpenStack test framework and test fixtures.
+=======================================================
+ oslotest -- OpenStack Testing Framework and Utilities
+=======================================================
 
 .. toctree::
    :maxdepth: 2

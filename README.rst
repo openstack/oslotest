@@ -1,6 +1,6 @@
-==========
- oslotest
-==========
+=======================================================
+ oslotest -- OpenStack Testing Framework and Utilities
+=======================================================
 
 The Oslo Test framework provides common fixtures, support for debugging, and
 better support for mocking results.
