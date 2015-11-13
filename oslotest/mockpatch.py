@@ -15,8 +15,14 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from debtcollector import removals
 import fixtures
 from six.moves import mock
+
+
+removals.removed_module("oslotest.mockpatch", replacement="fixtures",
+                        version="1.13", removal_version="2.0",
+                        message="Use fixtures.Mock* classes instead")
 
 
 class _Base(fixtures.Fixture):
