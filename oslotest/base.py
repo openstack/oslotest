@@ -15,6 +15,8 @@
 
 """Common utilities used in testing"""
 
+import logging
+
 import fixtures
 from oslotest import createfile
 from oslotest import log
@@ -23,6 +25,8 @@ from oslotest import timeout
 
 from six.moves import mock
 import testtools
+
+LOG = logging.getLogger(__name__)
 
 _TRUE_VALUES = ('True', 'true', '1', 'yes')
 _LOG_FORMAT = "%(levelname)8s [%(name)s] %(message)s"
@@ -81,12 +85,23 @@ class BaseTestCase(testtools.TestCase):
         # low for comparing most dicts
         self.maxDiff = 10000
 
-        # Ensure that the mock.patch.stopall cleanup is registered
-        # before any setUp() methods have a chance to register other
-        # things to be cleaned up, so it is called last. This allows
-        # tests to register their own cleanups with a mock.stop method
-        # so those mocks are not included in the stopall set.
-        self.addCleanup(mock.patch.stopall)
+    def addCleanup(self, function, *args, **kwargs):
+        # NOTE(dims): This is a hack for Mitaka. We'll need to undo this as
+        # early as possible in Newton and advertise that this hack will not
+        # be supported anymore.
+        if (hasattr(self, '_cleanups') and
+                isinstance(self._cleanups, list)):
+            if not self._cleanups:
+                # Ensure that the mock.patch.stopall cleanup is registered
+                # before any addCleanup() methods have a chance to register
+                # other things to be cleaned up, so it is called last. This
+                # allows tests to register their own cleanups with a mock.stop
+                # method so those mocks are not included in the stopall set.
+                super(BaseTestCase, self).addCleanup(mock.patch.stopall)
+        else:
+            LOG.error('Unable to patch test case. '
+                      'mock.patch.stopall cleanup was not registered.')
+        super(BaseTestCase, self).addCleanup(function, *args, **kwargs)
 
     def setUp(self):
         super(BaseTestCase, self).setUp()
