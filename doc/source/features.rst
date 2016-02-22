@@ -37,7 +37,7 @@ For example, the ``python-keystoneclient`` project has tests in
   [testenv:debug]
   commands = oslo_debug_helper -t keystoneclient/tests {posargs}
 
-Similarily, most ``oslo`` projects have the tests at the package level, it
+Similarly, most ``oslo`` projects have the tests at the package level, it
 would have to pass in::
 
   [testenv:debug]
