@@ -4,7 +4,7 @@
 *.so
 
 # Packages
-*.egg
+*.egg*
 *.egg-info
 dist
 build
@@ -22,11 +22,13 @@ lib64
 pip-log.txt
 
 # Unit test / coverage reports
-.coverage
-cover
+cover/
+.coverage*
+!.coveragerc
 .tox
 nosetests.xml
 .testrepository
+.venv
 
 # Translations
 *.mo
@@ -51,3 +53,4 @@ ChangeLog
 # Editors
 *~
 .*.swp
+.*sw?
