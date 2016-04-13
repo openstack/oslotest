@@ -13,55 +13,14 @@
 #    under the License.
 
 
-from six.moves import mock
-
 from oslotest import base
 from oslotest import mockpatch
 
 
-class Foo(object):
-    def bar(self):
-        pass
-
-
-def mocking_bar(self):
-    return 'mocked!'
-
-
-class TestMockPatch(base.BaseTestCase):
-    def test_mock_patch_with_replacement(self):
-        self.useFixture(mockpatch.Patch('%s.Foo.bar' % (__name__),
-                                        mocking_bar))
-        instance = Foo()
-        self.assertEqual(instance.bar(), 'mocked!')
-
-    def test_mock_patch_without_replacement(self):
-        self.useFixture(mockpatch.Patch('%s.Foo.bar' % (__name__)))
-        instance = Foo()
-        self.assertIsInstance(instance.bar(), mock.MagicMock)
-
-
-class TestMockMultiple(base.BaseTestCase):
-    def test_mock_multiple_with_replacement(self):
-        self.useFixture(mockpatch.Multiple('%s.Foo' % (__name__),
-                                           bar=mocking_bar))
-        instance = Foo()
-        self.assertEqual(instance.bar(), 'mocked!')
-
-    def test_mock_patch_without_replacement(self):
-        self.useFixture(mockpatch.Multiple('%s.Foo' % (__name__),
-                                           bar=mockpatch.Multiple.DEFAULT))
-        instance = Foo()
-        self.assertIsInstance(instance.bar(), mock.MagicMock)
-
-
-class TestMockPatchObject(base.BaseTestCase):
-    def test_mock_patch_object_with_replacement(self):
-        self.useFixture(mockpatch.PatchObject(Foo, 'bar', mocking_bar))
-        instance = Foo()
-        self.assertEqual(instance.bar(), 'mocked!')
-
-    def test_mock_patch_object_without_replacement(self):
-        self.useFixture(mockpatch.PatchObject(Foo, 'bar'))
-        instance = Foo()
-        self.assertIsInstance(instance.bar(), mock.MagicMock)
+class TestMockPatchSymbols(base.BaseTestCase):
+    def test_reference(self):
+        # Applications expect these public symbols to be available until the
+        # deprecated module is removed.
+        self.assertTrue(mockpatch.PatchObject)
+        self.assertTrue(mockpatch.Patch)
+        self.assertTrue(mockpatch.Multiple)
