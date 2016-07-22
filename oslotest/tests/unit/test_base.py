@@ -41,7 +41,7 @@ class TestBaseTestCase(testtools.TestCase):
         tc._set_timeout()
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
         fixture_timeout_mock.assert_called_once_with(1, gentle=True)
-        self.assertEqual(fixture_mock.call_count, 1)
+        self.assertEqual(1, fixture_mock.call_count)
 
     @mock.patch('os.environ.get')
     def test_fake_logs_default(self, env_get_mock):
@@ -77,7 +77,7 @@ class TestBaseTestCase(testtools.TestCase):
         tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_call('OS_DEBUG')
-        self.assertEqual(fixture_mock.call_count, 5)
+        self.assertEqual(5, fixture_mock.call_count)
 
     def test_mock_patch_cleanup_on_teardown(self):
         # create an object and save its reference
@@ -89,7 +89,7 @@ class TestBaseTestCase(testtools.TestCase):
 
         # patch the object
         mock.patch.object(obj, 'value').start()
-        self.assertNotEqual(obj.value, obj.backup)
+        self.assertNotEqual(obj.backup, obj.value)
 
         # run a test case
         loader = unittest.defaultTestLoader
@@ -97,7 +97,7 @@ class TestBaseTestCase(testtools.TestCase):
         suite.run(unittest.TestResult())
 
         # check that mock patches are cleaned up
-        self.assertEqual(obj.value, obj.backup)
+        self.assertEqual(obj.backup, obj.value)
 
     @mock.patch('os.environ')
     def test_capture_output_disabled(self, mock_env):
@@ -173,8 +173,8 @@ class TestTempFiles(base.BaseTestCase):
             if not isinstance(raw_contents, six.text_type):
                 raw_contents = six.text_type(raw_contents,
                                              encoding=raw_encoding)
-            self.assertEqual(raw_contents,
-                             six.text_type(contents, encoding=raw_encoding))
+            self.assertEqual(six.text_type(contents, encoding=raw_encoding),
+                             raw_contents)
 
     def test_create_bad_encoding(self):
         files = [["hrm", u'ಠ~ಠ', 'ascii']]
