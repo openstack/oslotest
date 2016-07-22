@@ -29,7 +29,7 @@ class TimeoutTestCase(testtools.TestCase):
         tc.setUp()
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
         fixture_timeout_mock.assert_called_once_with(1, gentle=True)
-        self.assertEqual(fixture_mock.call_count, 1)
+        self.assertEqual(1, fixture_mock.call_count)
 
     @mock.patch('os.environ.get')
     @mock.patch.object(timeout.Timeout, 'useFixture')
@@ -41,5 +41,5 @@ class TimeoutTestCase(testtools.TestCase):
         tc = timeout.Timeout()
         tc.setUp()
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
-        self.assertEqual(fixture_timeout_mock.call_count, 0)
-        self.assertEqual(fixture_mock.call_count, 0)
+        self.assertEqual(0, fixture_timeout_mock.call_count)
+        self.assertEqual(0, fixture_mock.call_count)
