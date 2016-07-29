@@ -16,7 +16,7 @@ import sys
 
 from oslotest import output
 
-import mock
+from six.moves import mock
 import testtools
 
 
