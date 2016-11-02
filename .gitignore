@@ -54,3 +54,6 @@ ChangeLog
 *~
 .*.swp
 .*sw?
+
+# reno build
+releasenotes/build
