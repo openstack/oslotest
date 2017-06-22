@@ -1,6 +1,6 @@
-============================
- Cross-project Unit Testing
-============================
+==========================
+Cross-project Unit Testing
+==========================
 
 Libraries in OpenStack have an unusual ability to introduce breaking
 changes. All of the projects are run together from source in one form
