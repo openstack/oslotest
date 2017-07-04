@@ -1,6 +1,6 @@
-=================
- Debugging Tests
-=================
+===============
+Debugging Tests
+===============
 
 Running tests through testrepository_ makes it difficult to use pdb for
 debugging them. oslotest includes ``oslo_debug_helper`` to make using

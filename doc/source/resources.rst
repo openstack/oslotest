@@ -1,6 +1,6 @@
-========================
- Other Useful Resources
-========================
+======================
+Other Useful Resources
+======================
 
 * Mock_ library documentation
 * OpenStack Bootstrapping Hour: Mock Best Practices: `video

@@ -1,6 +1,6 @@
-==========
- Features
-==========
+========
+Features
+========
 
 Debugging with oslo_debug_helper
 ================================
