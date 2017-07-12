@@ -12,15 +12,15 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import fixtures
 
 from oslotest import base
-from oslotest import mockpatch
 
 
 class TestMockPatchSymbols(base.BaseTestCase):
     def test_reference(self):
         # Applications expect these public symbols to be available until the
         # deprecated module is removed.
-        self.assertTrue(mockpatch.PatchObject)
-        self.assertTrue(mockpatch.Patch)
-        self.assertTrue(mockpatch.Multiple)
+        self.assertTrue(fixtures.MockPatchObject)
+        self.assertTrue(fixtures.MockPatch)
+        self.assertTrue(fixtures.MockPatchMultiple)

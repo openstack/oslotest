@@ -18,12 +18,12 @@ import logging
 import os
 import unittest
 
+import fixtures
 import six
 from six.moves import mock
 import testtools
 
 from oslotest import base
-from oslotest import mockpatch
 
 
 class TestBaseTestCase(testtools.TestCase):
@@ -125,7 +125,7 @@ class TestManualMock(base.BaseTestCase):
         patcher.start()
         self.addCleanup(patcher.stop)
         super(TestManualMock, self).setUp()
-        self.useFixture(mockpatch.Patch('fixtures.Timeout'))
+        self.useFixture(fixtures.MockPatch('fixtures.Timeout'))
         self.unstopped = mock.patch('os.environ.put')
 
     def tearDown(self):
