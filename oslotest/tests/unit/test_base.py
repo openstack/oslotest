@@ -104,16 +104,16 @@ class TestBaseTestCase(testtools.TestCase):
         mock_env.get.return_value = ''
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
-        self.assertIs(None, tc.output_fixture.stdout)
-        self.assertIs(None, tc.output_fixture.stderr)
+        self.assertIsNone(tc.output_fixture.stdout)
+        self.assertIsNone(tc.output_fixture.stderr)
 
     @mock.patch('os.environ')
     def test_enabled(self, mock_env):
         mock_env.get.return_value = 'True'
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
-        self.assertIsNot(None, tc.output_fixture.stdout)
-        self.assertIsNot(None, tc.output_fixture.stderr)
+        self.assertIsNotNone(tc.output_fixture.stdout)
+        self.assertIsNotNone(tc.output_fixture.stderr)
 
 
 class TestManualMock(base.BaseTestCase):

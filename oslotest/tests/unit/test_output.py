@@ -27,8 +27,8 @@ class CaptureOutputTest(testtools.TestCase):
         mock_env.get.return_value = ''
         f = output.CaptureOutput()
         f.setUp()
-        self.assertIs(None, f.stdout)
-        self.assertIs(None, f.stderr)
+        self.assertIsNone(f.stdout)
+        self.assertIsNone(f.stderr)
         self.assertIsNot(sys.stdout, f.stdout)
         self.assertIsNot(sys.stderr, f.stderr)
 
@@ -37,7 +37,7 @@ class CaptureOutputTest(testtools.TestCase):
         mock_env.get.return_value = 'True'
         f = output.CaptureOutput()
         f.setUp()
-        self.assertIsNot(None, f.stdout)
-        self.assertIsNot(None, f.stderr)
+        self.assertIsNotNone(f.stdout)
+        self.assertIsNotNone(f.stderr)
         self.assertIs(sys.stdout, f.stdout)
         self.assertIs(sys.stderr, f.stderr)
