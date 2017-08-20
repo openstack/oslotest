@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    As announced in Nov 2015, the oslotest.mockpatch module got removed now.
+    Please use fixtures.Mock* classes instead.
