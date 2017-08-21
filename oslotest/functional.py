@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from debtcollector import removals
 import os_client_config
+
+
+removals.removed_module("oslotest.functional",
+                        version="2.9.0", removal_version="3.0",
+                        message="oslotest.functional will be removed.")
 
 
 def _get_openstack_auth(openstack_config, cloud_name, override_name):
