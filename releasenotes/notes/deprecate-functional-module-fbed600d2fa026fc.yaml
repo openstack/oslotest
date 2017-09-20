@@ -1,0 +1,4 @@
+---
+deprecations:
+  - |
+    oslotest.functional is deprecated and will be removed with oslotest 3.0.0 .
