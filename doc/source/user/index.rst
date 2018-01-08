@@ -8,6 +8,7 @@ Using oslotest
    features
    debugging
    testing
+   mock-autospec
    cross-testing
    resources
    history
