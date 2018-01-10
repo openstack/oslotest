@@ -157,7 +157,12 @@ class _patch(mock.mock._patch):
                                             isinstance(target, type))
 
             new = super(_patch, self).__enter__()
-            _lazy_autospec_method(new, original_attr, eat_self)
+
+            # NOTE(claudiub): mock.patch.multiple will cause new to be a
+            # dict.
+            mocked_method = (new[self.attribute] if isinstance(new, dict)
+                             else new)
+            _lazy_autospec_method(mocked_method, original_attr, eat_self)
             return new
         else:
             return super(_patch, self).__enter__()
