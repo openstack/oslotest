@@ -23,7 +23,7 @@ import testtools
 class CaptureOutputTest(testtools.TestCase):
 
     @mock.patch('os.environ')
-    def test_disabled(self, mock_env):
+    def test_disabled_env(self, mock_env):
         mock_env.get.return_value = ''
         f = output.CaptureOutput()
         f.setUp()
@@ -33,9 +33,29 @@ class CaptureOutputTest(testtools.TestCase):
         self.assertIsNot(sys.stderr, f.stderr)
 
     @mock.patch('os.environ')
-    def test_enabled(self, mock_env):
+    def test_enabled_env(self, mock_env):
         mock_env.get.return_value = 'True'
         f = output.CaptureOutput()
+        f.setUp()
+        self.assertIsNotNone(f.stdout)
+        self.assertIsNotNone(f.stderr)
+        self.assertIs(sys.stdout, f.stdout)
+        self.assertIs(sys.stderr, f.stderr)
+
+    @mock.patch('os.environ')
+    def test_disabled_explicit(self, mock_env):
+        mock_env.get.side_effect = AssertionError('should not be called')
+        f = output.CaptureOutput(do_stdout=False, do_stderr=False)
+        f.setUp()
+        self.assertIsNone(f.stdout)
+        self.assertIsNone(f.stderr)
+        self.assertIsNot(sys.stdout, f.stdout)
+        self.assertIsNot(sys.stderr, f.stderr)
+
+    @mock.patch('os.environ')
+    def test_ensabled_explicit(self, mock_env):
+        mock_env.get.side_effect = AssertionError('should not be called')
+        f = output.CaptureOutput(do_stdout=True, do_stderr=True)
         f.setUp()
         self.assertIsNotNone(f.stdout)
         self.assertIsNotNone(f.stderr)

@@ -72,7 +72,7 @@ class TestBaseTestCase(testtools.TestCase):
     def test_fake_logs_with_log_cap(self, fixture_mock, env_get_mock):
         env_get_mock.side_effect = lambda value: {'OS_DEBUG': 0,
                                                   'OS_LOG_CAPTURE': 'True'
-                                                  }[value]
+                                                  }.get(value)
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')

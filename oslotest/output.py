@@ -20,11 +20,17 @@ _TRUE_VALUES = ('True', 'true', '1', 'yes')
 class CaptureOutput(fixtures.Fixture):
     """Optionally capture the output streams.
 
-    The behavior is managed through two environment variables. If
+    The behavior is managed through arguments to the constructor. The
+    default behavior is controlled via two environment variables. If
     ``OS_STDOUT_CAPTURE`` is true then stdout is captured and if
     ``OS_STDERR_CAPTURE`` is true then stderr is captured.
 
     "True" values include ``True``, ``true``, ``1``, and ``yes``.
+
+    :param do_stdout: Whether to capture stdout.
+    :type do_stdout: bool
+    :param do_stderr: Whether to capture stderr.
+    :type do_stderr: bool
 
     .. py:attribute:: stdout
 
@@ -38,18 +44,28 @@ class CaptureOutput(fixtures.Fixture):
 
     """
 
-    def __init__(self):
+    def __init__(self, do_stdout=None, do_stderr=None):
         super(CaptureOutput, self).__init__()
+        if do_stdout is None:
+            self.do_stdout = (os.environ.get('OS_STDOUT_CAPTURE')
+                              in _TRUE_VALUES)
+        else:
+            self.do_stdout = do_stdout
+        if do_stderr is None:
+            self.do_stderr = (os.environ.get('OS_STDERR_CAPTURE')
+                              in _TRUE_VALUES)
+        else:
+            self.do_stderr = do_stderr
         self.stdout = None
         self.stderr = None
 
     def setUp(self):
         super(CaptureOutput, self).setUp()
-        if os.environ.get('OS_STDOUT_CAPTURE') in _TRUE_VALUES:
+        if self.do_stdout:
             self._stdout_fixture = fixtures.StringStream('stdout')
             self.stdout = self.useFixture(self._stdout_fixture).stream
             self.useFixture(fixtures.MonkeyPatch('sys.stdout', self.stdout))
-        if os.environ.get('OS_STDERR_CAPTURE') in _TRUE_VALUES:
+        if self.do_stderr:
             self._stderr_fixture = fixtures.StringStream('stderr')
             self.stderr = self.useFixture(self._stderr_fixture).stream
             self.useFixture(fixtures.MonkeyPatch('sys.stderr', self.stderr))

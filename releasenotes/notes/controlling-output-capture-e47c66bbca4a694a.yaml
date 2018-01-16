@@ -1,0 +1,6 @@
+---
+features:
+  - |
+    Change the API for the CaptureOutput fixture so that tests may
+    enable it explicitly instead of purely relying on the environment
+    variables to control it.
