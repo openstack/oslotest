@@ -82,6 +82,13 @@ class MockSanityTestCase(testtools.TestCase):
         foo = Foo()
         self._check_autospeced_foo(foo)
 
+    def test_patch_autospec_multiple(self):
+        with mock.patch.multiple(Foo, bar=mock.DEFAULT,
+                                 classic_bar=mock.DEFAULT,
+                                 static_bar=mock.DEFAULT):
+            foo = Foo()
+            self._check_autospeced_foo(foo)
+
     @mock.patch.object(Foo, 'static_bar', autospec=False)
     @mock.patch.object(Foo, 'classic_bar', autospec=False)
     @mock.patch.object(Foo, 'bar', autospec=False)
