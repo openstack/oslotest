@@ -70,10 +70,16 @@ class MockSanityTestCase(testtools.TestCase):
         # assert that AttributeError is raised if the method does not exist.
         self.assertRaises(AttributeError, getattr, foo, 'lish')
 
-    def test_mock_autospec_all_members(self):
+    def _check_mock_autospec_all_members(self, mock_cls):
         for spec in [Foo, Foo()]:
-            foo = mock.Mock(autospec=spec)
+            foo = mock_cls(autospec=spec)
             self._check_autospeced_foo(foo)
+
+    def test_mock_autospec_all_members(self):
+        self._check_mock_autospec_all_members(mock.Mock)
+
+    def test_magic_mock_autospec_all_members(self):
+        self._check_mock_autospec_all_members(mock.MagicMock)
 
     @mock.patch.object(Foo, 'static_bar')
     @mock.patch.object(Foo, 'classic_bar')

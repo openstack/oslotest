@@ -106,7 +106,7 @@ class MockAutospecFixture(fixtures.Fixture):
         # patch both external and internal usage of Mock / MagicMock.
         self.useFixture(fixtures.MonkeyPatch('mock.Mock', _AutospecMock))
         self.useFixture(fixtures.MonkeyPatch('mock.mock.Mock', _AutospecMock))
-        self.useFixture(fixtures.MonkeyPatch('mock.mock.MagicMock',
+        self.useFixture(fixtures.MonkeyPatch('mock.MagicMock',
                                              _AutospecMagicMock))
         self.useFixture(fixtures.MonkeyPatch('mock.mock.MagicMock',
                                              _AutospecMagicMock))
