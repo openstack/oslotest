@@ -74,6 +74,7 @@ class MockSanityTestCase(testtools.TestCase):
         for spec in [Foo, Foo()]:
             foo = mock_cls(autospec=spec)
             self._check_autospeced_foo(foo)
+            self._check_autospeced_foo(foo())
 
     def test_mock_autospec_all_members(self):
         self._check_mock_autospec_all_members(mock.Mock)

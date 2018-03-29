@@ -44,12 +44,18 @@ class _AutospecMockMixin(object):
 
     def __init__(self, *args, **kwargs):
         super(_AutospecMockMixin, self).__init__(*args, **kwargs)
-        self.__dict__['_autospec'] = kwargs.get('autospec')
+        autospec = kwargs.get('autospec')
+        self.__dict__['_autospec'] = autospec
         _mock_methods = self.__dict__['_mock_methods']
         if _mock_methods:
             # this will allow us to be able to set _mock_check_sig if
             # the spec_set argument has been given.
             _mock_methods.append('_mock_check_sig')
+
+        # callable mocks with autospecs (e.g.: the given autospec is a class)
+        # should have their return values autospeced as well.
+        if autospec:
+            self.return_value.__dict__['_autospec'] = autospec
 
     def __getattr__(self, name):
         attr = super(_AutospecMockMixin, self).__getattr__(name)
