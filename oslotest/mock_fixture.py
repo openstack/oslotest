@@ -122,8 +122,10 @@ class _patch(mock.mock._patch):
     https://github.com/testing-cabal/mock/issues/396
     """
 
-    def __init__(self, *args, **kwargs):
-        super(_patch, self).__init__(*args, **kwargs)
+    def __enter__(self):
+        # NOTE(claudiub): we're doing the autospec checks here so unit tests
+        # have a chance to set up mocks in advance (e.g.: mocking platform
+        # specific libraries, which would cause the patch to fail otherwise).
 
         # By default, autospec is None. We will consider it as True.
         autospec = True if self.autospec is None else self.autospec
@@ -146,11 +148,9 @@ class _patch(mock.mock._patch):
 
         # NOTE(claudiub): reset the self.autospec property, so we can handle
         # the autospec scenario ourselves.
-        self._autospec = autospec
         self.autospec = None
 
-    def __enter__(self):
-        if self._autospec:
+        if autospec:
             target = self.getter()
             original_attr = getattr(target, self.attribute)
             eat_self = mock.mock._must_skip(target, self.attribute,
