@@ -72,7 +72,7 @@ class BaseTestCase(testtools.TestCase):
     workaround is to overload the ``_fake_logs`` function in a base class but
     this will deactivate fake logging globally.
 
-    .. _fixtures: https://pypi.python.org/pypi/fixtures
+    .. _fixtures: https://pypi.org/project/fixtures
 
     """
 

@@ -26,4 +26,4 @@ or
 
    * https://wiki.openstack.org/wiki/Testr
 
-.. _testrepository: https://pypi.python.org/pypi/testrepository
+.. _testrepository: https://pypi.org/project/testrepository
