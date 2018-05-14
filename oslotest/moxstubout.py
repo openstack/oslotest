@@ -15,10 +15,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from debtcollector import removals
 import fixtures
 from mox3 import mox
 
 
+@removals.removed_class('MoxStubout', version='3.5.0')
 class MoxStubout(fixtures.Fixture):
     """Deal with code around mox and stubout as a fixture."""
 
