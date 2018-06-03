@@ -10,6 +10,8 @@
 # relative to the project directory. If no value is passed, it is assumed
 # to be packagename/tests.
 
+PYTHON=${PYTHON:-python}
+
 TMP_DIR=`mktemp -d debug-$$-XXX` || exit 1
 trap "rm -rf $TMP_DIR" EXIT
 
@@ -17,7 +19,7 @@ ALL_TESTS=$TMP_DIR/all_tests
 TESTS_TO_RUN=$TMP_DIR/tests_to_run
 
 # Default to packagename/tests, i.e., keystone/tests
-PACKAGENAME=$(python setup.py --name)
+PACKAGENAME=$(${PYTHON} setup.py --name)
 TEST_DIR=./$PACKAGENAME/tests
 
 # If a specific path is passed, use that one
@@ -27,7 +29,7 @@ while getopts ":t:" opt; do
     esac
 done
 
-python -m testtools.run discover -t ./ $TEST_DIR --list > $ALL_TESTS
+${PYTHON} -m testtools.run discover -t ./ $TEST_DIR --list > $ALL_TESTS
 
 # getopts friendly way of determining if a positional arg has been passed
 ARG1=${@:$OPTIND:1}
@@ -37,4 +39,4 @@ else
     mv $ALL_TESTS $TESTS_TO_RUN
 fi
 
-python -m testtools.run discover --load-list $TESTS_TO_RUN
+${PYTHON} -m testtools.run discover --load-list $TESTS_TO_RUN
