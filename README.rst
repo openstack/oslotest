@@ -18,3 +18,4 @@ better support for mocking results.
 * Documentation: https://docs.openstack.org/oslotest/latest/
 * Source: https://git.openstack.org/cgit/openstack/oslotest
 * Bugs: https://bugs.launchpad.net/oslotest
+* Release notes: https://docs.openstack.org/releasenotes/oslotest
