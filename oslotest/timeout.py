@@ -22,13 +22,27 @@ class Timeout(fixtures.Fixture):
 
     """
 
+    def __init__(self, default_timeout=0, scaling_factor=1):
+        super(Timeout, self).__init__()
+        try:
+            self._default_timeout = int(default_timeout)
+        except ValueError:
+            # If timeout value is invalid do not set a timeout.
+            self._default_timeout = 0
+        self._scaling_factor = scaling_factor
+
     def setUp(self):
         super(Timeout, self).setUp()
-        test_timeout = os.environ.get('OS_TEST_TIMEOUT', 0)
+        test_timeout = os.environ.get('OS_TEST_TIMEOUT', self._default_timeout)
         try:
             test_timeout = int(test_timeout)
         except ValueError:
             # If timeout value is invalid do not set a timeout.
-            test_timeout = 0
-        if test_timeout > 0:
-            self.useFixture(fixtures.Timeout(test_timeout, gentle=True))
+            test_timeout = self._default_timeout
+        try:
+            scaled_timeout = int(test_timeout * self._scaling_factor)
+        except ValueError:
+            # If scaling factor is invalid, use the basic test timeout.
+            scaled_timeout = test_timeout
+        if scaled_timeout > 0:
+            self.useFixture(fixtures.Timeout(scaled_timeout, gentle=True))

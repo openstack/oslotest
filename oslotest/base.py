@@ -40,6 +40,15 @@ class BaseTestCase(testtools.TestCase):
     individual test cases can run. This lets tests fail for taking too
     long, and prevents deadlocks from completely hanging test runs.
 
+    The class variable ``DEFAULT_TIMEOUT`` can be set to configure
+    a test suite default test value for cases in which ``OS_TEST_TIMEOUT``
+    is not set. It defaults to ``0``, which means no timeout.
+
+    The class variable ``TIMEOUT_SCALING_FACTOR`` can be set on an
+    individual test class for tests that reasonably take longer than
+    the rest of the test suite so that the overall timeout can be
+    kept small. It defaults to ``1``.
+
     If the environment variable ``OS_STDOUT_CAPTURE`` is set, a fake
     stream replaces ``sys.stdout`` so the test can look at the output
     it produces.
@@ -75,6 +84,8 @@ class BaseTestCase(testtools.TestCase):
     .. _fixtures: https://pypi.org/project/fixtures
 
     """
+    DEFAULT_TIMEOUT = 0
+    TIMEOUT_SCALING_FACTOR = 1
 
     def __init__(self, *args, **kwds):
         super(BaseTestCase, self).__init__(*args, **kwds)
@@ -112,7 +123,10 @@ class BaseTestCase(testtools.TestCase):
         self.useFixture(fixtures.TempHomeDir())
 
     def _set_timeout(self):
-        self.useFixture(timeout.Timeout())
+        self.useFixture(timeout.Timeout(
+            default_timeout=self.DEFAULT_TIMEOUT,
+            scaling_factor=self.TIMEOUT_SCALING_FACTOR,
+        ))
 
     def _fake_output(self):
         self.output_fixture = self.useFixture(output.CaptureOutput())

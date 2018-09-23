@@ -43,3 +43,51 @@ class TimeoutTestCase(testtools.TestCase):
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
         self.assertEqual(0, fixture_timeout_mock.call_count)
         self.assertEqual(0, fixture_mock.call_count)
+
+    @mock.patch('os.environ.get')
+    @mock.patch.object(timeout.Timeout, 'useFixture')
+    @mock.patch('fixtures.Timeout')
+    def test_timeout_default(
+            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        env_get_mock.return_value = 5
+        tc = timeout.Timeout(default_timeout=5)
+        tc.setUp()
+        env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 5)
+        fixture_timeout_mock.assert_called_once_with(5, gentle=True)
+        self.assertEqual(1, fixture_mock.call_count)
+
+    @mock.patch('os.environ.get')
+    @mock.patch.object(timeout.Timeout, 'useFixture')
+    @mock.patch('fixtures.Timeout')
+    def test_timeout_bad_default(
+            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        env_get_mock.return_value = 'invalid'
+        tc = timeout.Timeout(default_timeout='invalid')
+        tc.setUp()
+        env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
+        self.assertEqual(0, fixture_timeout_mock.call_count)
+        self.assertEqual(0, fixture_mock.call_count)
+
+    @mock.patch('os.environ.get')
+    @mock.patch.object(timeout.Timeout, 'useFixture')
+    @mock.patch('fixtures.Timeout')
+    def test_timeout_scaling(
+            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        env_get_mock.return_value = 2
+        tc = timeout.Timeout(scaling_factor=1.5)
+        tc.setUp()
+        env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
+        fixture_timeout_mock.assert_called_once_with(3, gentle=True)
+        self.assertEqual(1, fixture_mock.call_count)
+
+    @mock.patch('os.environ.get')
+    @mock.patch.object(timeout.Timeout, 'useFixture')
+    @mock.patch('fixtures.Timeout')
+    def test_timeout_bad_scaling(
+            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        env_get_mock.return_value = 2
+        tc = timeout.Timeout(scaling_factor='invalid')
+        tc.setUp()
+        env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
+        fixture_timeout_mock.assert_called_once_with(2, gentle=True)
+        self.assertEqual(1, fixture_mock.call_count)

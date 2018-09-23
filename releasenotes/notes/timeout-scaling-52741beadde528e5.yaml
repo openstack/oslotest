@@ -1,0 +1,10 @@
+---
+features:
+  - |
+    New class variable, ``TIMEOUT_SCALING_FACTOR`` was added that allows
+    modifying a test class to have a longer timeout than other tests in the
+    suite without having to raise the default timeout for all tests.
+  - |
+    New class varable, ``DEFAULT_TIMEOUT`` was added that lets test suite
+    authors override the default value of ``OS_TEST_TIMEOUT`` at the
+    test suite level.
