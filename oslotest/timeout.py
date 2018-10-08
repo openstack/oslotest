@@ -37,7 +37,7 @@ class Timeout(fixtures.Fixture):
         try:
             test_timeout = int(test_timeout)
         except ValueError:
-            # If timeout value is invalid do not set a timeout.
+            # If timeout value is invalid use the default timeout.
             test_timeout = self._default_timeout
         try:
             scaled_timeout = int(test_timeout * self._scaling_factor)
