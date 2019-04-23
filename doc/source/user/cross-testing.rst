@@ -31,7 +31,7 @@ For example::
 
   $ mkdir -p ~/repos/openstack
   $ cd ~/repos/openstack
-  $ git clone https://git.openstack.org/openstack/oslo-incubator
+  $ git clone https://opendev.org/openstack/oslo-incubator
   $ cd ~/repos
   $ ./openstack/oslo-incubator/tools/clone_openstack.sh
 
