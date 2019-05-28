@@ -126,14 +126,6 @@ class TestManualMock(base.BaseTestCase):
         self.addCleanup(patcher.stop)
         super(TestManualMock, self).setUp()
         self.useFixture(fixtures.MockPatch('fixtures.Timeout'))
-        self.unstopped = mock.patch('os.environ.put')
-
-    def tearDown(self):
-        super(TestManualMock, self).tearDown()
-        self.assertRaises(
-            RuntimeError,
-            self.unstopped.stop,
-        )
 
     def test_mock_patch_manually(self):
         # Verify that if a test instance creates its own mock and
