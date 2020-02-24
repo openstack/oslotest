@@ -9,7 +9,7 @@
 # Fail the build if any command fails
 set -e
 
-PYTHON=${PYTHON:-python}
+PYTHON=${PYTHON:-python3}
 
 function usage {
     cat - <<EOF
