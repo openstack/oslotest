@@ -1,0 +1,6 @@
+---
+upgrade:
+  - |
+    The ``oslotest.moxstubout`` module, which was deprecated in 3.5.0, has now
+    been removed. Mox is considered unmaintained and should be replaced by
+    mock.
