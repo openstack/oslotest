@@ -1,0 +1,5 @@
+---
+upgrade:
+  - |
+    The ``oslotest.functional`` module, which was deprecated in 2.18.1, has
+    now been removed. This module was overly complicated and had no users.
