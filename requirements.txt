@@ -7,5 +7,3 @@ python-subunit>=1.0.0 # Apache-2.0/BSD
 six>=1.10.0 # MIT
 testtools>=2.2.0 # MIT
 mock>=2.0.0 # BSD
-os-client-config>=1.28.0 # Apache-2.0
-debtcollector>=1.2.0  # Apache-2.0
