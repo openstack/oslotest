@@ -15,8 +15,8 @@
 #    under the License.
 
 import logging
+from unittest import mock
 
-from six.moves import mock
 import testtools
 
 from oslotest import log

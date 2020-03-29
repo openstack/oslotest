@@ -15,9 +15,9 @@
 #    under the License.
 
 import functools
+from unittest import mock
 
 import fixtures
-import mock
 
 
 def _lazy_autospec_method(mocked_method, original_method, eat_self):
@@ -72,8 +72,10 @@ class _AutospecMockMixin(object):
         original_attr = getattr(original_spec, name)
         if callable(original_attr):
             # lazily autospec callable attribute.
-            eat_self = mock.mock._must_skip(original_spec, name,
-                                            isinstance(original_spec, type))
+            eat_self = mock._must_skip(
+                original_spec, name,
+                isinstance(original_spec, type)
+            )
 
             _lazy_autospec_method(attr, original_attr, eat_self)
 
@@ -110,15 +112,17 @@ class MockAutospecFixture(fixtures.Fixture):
         super(MockAutospecFixture, self).setUp()
 
         # patch both external and internal usage of Mock / MagicMock.
-        self.useFixture(fixtures.MonkeyPatch('mock.Mock', _AutospecMock))
-        self.useFixture(fixtures.MonkeyPatch('mock.mock.Mock', _AutospecMock))
-        self.useFixture(fixtures.MonkeyPatch('mock.MagicMock',
-                                             _AutospecMagicMock))
-        self.useFixture(fixtures.MonkeyPatch('mock.mock.MagicMock',
-                                             _AutospecMagicMock))
+        self.useFixture(
+            fixtures.MonkeyPatch(
+                'unittest.mock.Mock',
+                _AutospecMock))
+        self.useFixture(
+            fixtures.MonkeyPatch(
+                'unittest.mock.MagicMock',
+                _AutospecMagicMock))
 
 
-class _patch(mock.mock._patch):
+class _patch(mock._patch):
     """Patch class with working autospec functionality.
 
     Currently, mock.patch functionality doesn't handle the autospec parameter
@@ -159,8 +163,11 @@ class _patch(mock.mock._patch):
         if autospec:
             target = self.getter()
             original_attr = getattr(target, self.attribute)
-            eat_self = mock.mock._must_skip(target, self.attribute,
-                                            isinstance(target, type))
+            eat_self = mock._must_skip(
+                target,
+                self.attribute,
+                isinstance(target, type)
+            )
 
             new = super(_patch, self).__enter__()
 
@@ -186,11 +193,11 @@ def _safe_attribute_error_wrapper(func):
 
 def patch_mock_module():
     """Replaces the mock.patch class."""
-    mock.mock._patch = _patch
+    mock._patch = _patch
 
     # NOTE(claudiub): mock cannot autospec partial functions properly,
     # especially those created by LazyLoader objects (scheduler client),
     # as it will try to copy the partial function's __name__ (which they do
     # not have).
-    mock.mock._copy_func_details = _safe_attribute_error_wrapper(
-        mock.mock._copy_func_details)
+    mock._copy_func_details = _safe_attribute_error_wrapper(
+        mock._copy_func_details)
