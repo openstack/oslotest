@@ -6,3 +6,4 @@ fixtures>=3.0.0 # Apache-2.0/BSD
 python-subunit>=1.0.0 # Apache-2.0/BSD
 six>=1.10.0 # MIT
 testtools>=2.2.0 # MIT
+mock>=2.0.0 # BSD

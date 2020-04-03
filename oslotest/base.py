@@ -16,7 +16,6 @@
 """Common utilities used in testing"""
 
 import logging
-from unittest import mock
 
 import fixtures
 from oslotest import createfile
@@ -24,6 +23,7 @@ from oslotest import log
 from oslotest import output
 from oslotest import timeout
 
+from six.moves import mock
 import testtools
 
 LOG = logging.getLogger(__name__)

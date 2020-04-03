@@ -17,10 +17,10 @@
 import logging
 import os
 import unittest
-from unittest import mock
 
 import fixtures
 import six
+from six.moves import mock
 import testtools
 
 from oslotest import base
