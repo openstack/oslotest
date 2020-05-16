@@ -28,7 +28,6 @@ modindex_common_prefix = ['oslotest.']
 master_doc = 'index'
 
 # General information about the project.
-project = u'oslotest'
 copyright = u'2014-2019, OpenStack Foundation'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
@@ -51,9 +50,9 @@ html_theme = 'openstackdocs'
 
 # -- openstackdocstheme configuration ----------------------------------------
 
-repository_name = 'openstack/oslotest'
-bug_project = 'oslotest'
-bug_tag = ''
+openstackdocs_repo_name = 'openstack/oslotest'
+openstackdocs_bug_project = 'oslotest'
+openstackdocs_bug_tag = ''
 
 # sphinxcontrib.apidoc options
 apidoc_module_dir = '../../oslotest'

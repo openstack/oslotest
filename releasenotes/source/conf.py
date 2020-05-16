@@ -47,14 +47,9 @@ pygments_style = 'sphinx'
 # a list of builtin themes.
 html_theme = 'openstackdocs'
 
-# If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
-# using the given strftime format.
-# html_last_updated_fmt = '%b %d, %Y'
-html_last_updated_fmt = '%Y-%m-%d %H:%M'
-
-
 # -- openstackdocstheme configuration -------------------------------------
 
-repository_name = 'openstack/oslotest'
-bug_project = 'oslotest'
-bug_tag = ''
+openstackdocs_repo_name = 'openstack/oslotest'
+openstackdocs_bug_project = 'oslotest'
+openstackdocs_bug_tag = ''
+openstackdocs_auto_name = False
