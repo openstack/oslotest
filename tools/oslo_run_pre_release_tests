@@ -14,8 +14,6 @@
 """Run unit tests for projects that use a library.
 """
 
-from __future__ import print_function
-
 import glob
 import os
 import subprocess
