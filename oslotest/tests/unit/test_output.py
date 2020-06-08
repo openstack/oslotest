@@ -13,11 +13,11 @@
 #    under the License.
 
 import sys
+from unittest import mock
+
+import testtools
 
 from oslotest import output
-
-from six.moves import mock
-import testtools
 
 
 class CaptureOutputTest(testtools.TestCase):
