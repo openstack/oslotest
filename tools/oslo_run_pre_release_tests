@@ -26,8 +26,7 @@ import pkg_resources
 
 
 def find_all_projects(repo_root):
-    """Scan the checked out repositories for all available projects.
-    """
+    """Scan the checked out repositories for all available projects."""
     pattern = os.path.join(repo_root, 'openstack/*')
     candidates = glob.glob(pattern)
     prefix_len = len(repo_root)
@@ -39,7 +38,9 @@ def find_all_projects(repo_root):
 
 
 def find_consuming_projects(lib_name, repo_root, projects):
-    """Filter the list of projects to only include entries that use the library.
+    """Filter the list of projects
+
+    Filter the list of projects to only include entries that use the library.
     """
     for p in projects:
         consumer = False
