@@ -36,7 +36,7 @@ class BaseTestCase(testtools.TestCase):
     """Base class for unit test classes.
 
     If the environment variable ``OS_TEST_TIMEOUT`` is set to an
-    integer value, a timer is configured to control how long
+    integer value (**seconds**), a timer is configured to control how long
     individual test cases can run. This lets tests fail for taking too
     long, and prevents deadlocks from completely hanging test runs.
 
