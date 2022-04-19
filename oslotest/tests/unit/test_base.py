@@ -137,24 +137,24 @@ class TestManualMock(base.BaseTestCase):
 
 class TestTempFiles(base.BaseTestCase):
     def test_create_unicode_files(self):
-        files = [["no_approve", u'ಠ_ಠ']]
+        files = [["no_approve", 'ಠ_ಠ']]
         temps = self.create_tempfiles(files)
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
             contents = f.read()
-        self.assertEqual(u'ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
-        files = [["embarrassed", u'⊙﹏⊙', 'utf-8']]
+        files = [["embarrassed", '⊙﹏⊙', 'utf-8']]
         temps = self.create_tempfiles(files)
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
             contents = f.read()
-        self.assertEqual(u'⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
 
     def test_create_unicode_files_multi_encoding(self):
         files = [
-            ["embarrassed", u'⊙﹏⊙', 'utf-8'],
+            ["embarrassed", '⊙﹏⊙', 'utf-8'],
             ['abc', 'abc', 'ascii'],
         ]
         temps = self.create_tempfiles(files)
@@ -169,7 +169,7 @@ class TestTempFiles(base.BaseTestCase):
                              raw_contents)
 
     def test_create_bad_encoding(self):
-        files = [["hrm", u'ಠ~ಠ', 'ascii']]
+        files = [["hrm", 'ಠ~ಠ', 'ascii']]
         self.assertRaises(UnicodeError, self.create_tempfiles, files)
 
     def test_prefix(self):

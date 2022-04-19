@@ -27,25 +27,25 @@ class CreateFileWithContentTest(base.BaseTestCase):
     def test_create_unicode_files(self):
         f = createfile.CreateFileWithContent(
             "no_approve",
-            u'ಠ_ಠ',
+            'ಠ_ಠ',
         )
         f.setUp()
         with open(f.path, 'rb') as f:
             contents = f.read()
-        self.assertEqual(u'ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
         f = createfile.CreateFileWithContent(
-            "embarrassed", u'⊙﹏⊙', encoding='utf-8',
+            "embarrassed", '⊙﹏⊙', encoding='utf-8',
         )
         f.setUp()
         with open(f.path, 'rb') as f:
             contents = f.read()
-        self.assertEqual(u'⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
 
     def test_create_bad_encoding(self):
         f = createfile.CreateFileWithContent(
-            "hrm", u'ಠ~ಠ', encoding='ascii',
+            "hrm", 'ಠ~ಠ', encoding='ascii',
         )
         self.assertRaises(UnicodeError, f.setUp)
 

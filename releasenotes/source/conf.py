@@ -27,8 +27,8 @@ extensions = [
 master_doc = 'index'
 
 # General information about the project.
-project = u'oslotest Release Notes'
-copyright = u'2016, oslotest Developers'
+project = 'oslotest Release Notes'
+copyright = '2016, oslotest Developers'
 
 # Release notes do not need a version in the title, they span
 # multiple versions.
