@@ -45,6 +45,6 @@ class _NoModuleFinder(object):
     def __init__(self, module):
         self.module = module
 
-    def find_module(self, fullname, path):
+    def find_spec(self, fullname, path, target):
         if fullname == self.module or fullname.startswith(self.module + '.'):
             raise ImportError
