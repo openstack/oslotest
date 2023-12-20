@@ -16,8 +16,6 @@
 
 import os
 
-import six
-
 from oslotest import base
 from oslotest import createfile
 
@@ -32,7 +30,7 @@ class CreateFileWithContentTest(base.BaseTestCase):
         f.setUp()
         with open(f.path, 'rb') as f:
             contents = f.read()
-        self.assertEqual('ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('ಠ_ಠ', str(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
         f = createfile.CreateFileWithContent(
@@ -41,7 +39,7 @@ class CreateFileWithContentTest(base.BaseTestCase):
         f.setUp()
         with open(f.path, 'rb') as f:
             contents = f.read()
-        self.assertEqual('⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('⊙﹏⊙', str(contents, encoding='utf-8'))
 
     def test_create_bad_encoding(self):
         f = createfile.CreateFileWithContent(

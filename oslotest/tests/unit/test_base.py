@@ -20,7 +20,6 @@ import unittest
 from unittest import mock
 
 import fixtures
-import six
 import testtools
 
 from oslotest import base
@@ -142,7 +141,7 @@ class TestTempFiles(base.BaseTestCase):
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
             contents = f.read()
-        self.assertEqual('ಠ_ಠ', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('ಠ_ಠ', str(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
         files = [["embarrassed", '⊙﹏⊙', 'utf-8']]
@@ -150,7 +149,7 @@ class TestTempFiles(base.BaseTestCase):
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
             contents = f.read()
-        self.assertEqual('⊙﹏⊙', six.text_type(contents, encoding='utf-8'))
+        self.assertEqual('⊙﹏⊙', str(contents, encoding='utf-8'))
 
     def test_create_unicode_files_multi_encoding(self):
         files = [
@@ -162,10 +161,9 @@ class TestTempFiles(base.BaseTestCase):
         for i, (basename, raw_contents, raw_encoding) in enumerate(files):
             with open(temps[i], 'rb') as f:
                 contents = f.read()
-            if not isinstance(raw_contents, six.text_type):
-                raw_contents = six.text_type(raw_contents,
-                                             encoding=raw_encoding)
-            self.assertEqual(six.text_type(contents, encoding=raw_encoding),
+            if not isinstance(raw_contents, str):
+                raw_contents = str(raw_contents, encoding=raw_encoding)
+            self.assertEqual(str(contents, encoding=raw_encoding),
                              raw_contents)
 
     def test_create_bad_encoding(self):

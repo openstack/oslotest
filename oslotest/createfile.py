@@ -14,7 +14,6 @@ import os
 import tempfile
 
 import fixtures
-import six
 
 
 class CreateFileWithContent(fixtures.Fixture):
@@ -56,7 +55,7 @@ class CreateFileWithContent(fixtures.Fixture):
     def setUp(self):
         super(CreateFileWithContent, self).setUp()
         contents = self._contents
-        if isinstance(contents, six.text_type):
+        if isinstance(contents, str):
             contents = contents.encode(self._encoding)
         if not os.path.isabs(self._filename):
             (fd, self.path) = tempfile.mkstemp(prefix=self._filename,
