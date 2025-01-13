@@ -23,7 +23,7 @@ class Timeout(fixtures.Fixture):
     """
 
     def __init__(self, default_timeout=0, scaling_factor=1):
-        super(Timeout, self).__init__()
+        super().__init__()
         try:
             self._default_timeout = int(default_timeout)
         except ValueError:
@@ -32,7 +32,7 @@ class Timeout(fixtures.Fixture):
         self._scaling_factor = scaling_factor
 
     def setUp(self):
-        super(Timeout, self).setUp()
+        super().setUp()
         test_timeout = os.environ.get('OS_TEST_TIMEOUT', self._default_timeout)
         try:
             test_timeout = int(test_timeout)

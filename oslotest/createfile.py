@@ -53,7 +53,7 @@ class CreateFileWithContent(fixtures.Fixture):
         self._encoding = encoding
 
     def setUp(self):
-        super(CreateFileWithContent, self).setUp()
+        super().setUp()
         contents = self._contents
         if isinstance(contents, str):
             contents = contents.encode(self._encoding)

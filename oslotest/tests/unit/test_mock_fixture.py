@@ -26,7 +26,7 @@ from oslotest import mock_fixture
 mock_fixture.patch_mock_module()
 
 
-class Foo(object):
+class Foo:
     def bar(self, a, b, c, d=None):
         pass
 
@@ -42,7 +42,7 @@ class Foo(object):
 class MockSanityTestCase(testtools.TestCase):
 
     def setUp(self):
-        super(MockSanityTestCase, self).setUp()
+        super().setUp()
         self.useFixture(mock_fixture.MockAutospecFixture())
 
     def _check_autospeced_foo(self, foo):

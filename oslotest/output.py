@@ -45,7 +45,7 @@ class CaptureOutput(fixtures.Fixture):
     """
 
     def __init__(self, do_stdout=None, do_stderr=None):
-        super(CaptureOutput, self).__init__()
+        super().__init__()
         if do_stdout is None:
             self.do_stdout = (os.environ.get('OS_STDOUT_CAPTURE')
                               in _TRUE_VALUES)
@@ -60,7 +60,7 @@ class CaptureOutput(fixtures.Fixture):
         self.stderr = None
 
     def setUp(self):
-        super(CaptureOutput, self).setUp()
+        super().setUp()
         if self.do_stdout:
             self._stdout_fixture = fixtures.StringStream('stdout')
             self.stdout = self.useFixture(self._stdout_fixture).stream

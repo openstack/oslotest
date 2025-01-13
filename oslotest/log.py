@@ -18,7 +18,7 @@ import fixtures
 _TRUE_VALUES = ('True', 'true', '1', 'yes')
 _FALSE_VALUES = ('False', 'false', '0', 'no')
 _BASE_LOG_LEVELS = ('DEBUG', 'INFO', 'WARN', 'WARNING', 'ERROR', 'CRITICAL')
-_LOG_LEVELS = dict((n, getattr(logging, n)) for n in _BASE_LOG_LEVELS)
+_LOG_LEVELS = {n: getattr(logging, n) for n in _BASE_LOG_LEVELS}
 _LOG_LEVELS.update({
     'TRACE': 5,
 })
@@ -61,7 +61,7 @@ class ConfigureLogging(fixtures.Fixture):
     """Default log format"""
 
     def __init__(self, format=DEFAULT_FORMAT):
-        super(ConfigureLogging, self).__init__()
+        super().__init__()
         self._format = format
         self.level = None
         _os_debug = os.environ.get('OS_DEBUG')
@@ -78,7 +78,7 @@ class ConfigureLogging(fixtures.Fixture):
         self.logger = None
 
     def setUp(self):
-        super(ConfigureLogging, self).setUp()
+        super().setUp()
         if self.capture_logs:
             self.logger = self.useFixture(
                 fixtures.FakeLogger(

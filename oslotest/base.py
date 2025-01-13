@@ -88,7 +88,7 @@ class BaseTestCase(testtools.TestCase):
     TIMEOUT_SCALING_FACTOR = 1
 
     def __init__(self, *args, **kwds):
-        super(BaseTestCase, self).__init__(*args, **kwds)
+        super().__init__(*args, **kwds)
 
         # This is the number of characters shown when two objects do not
         # match for assertDictEqual, assertMultiLineEqual, and
@@ -108,14 +108,14 @@ class BaseTestCase(testtools.TestCase):
                 # other things to be cleaned up, so it is called last. This
                 # allows tests to register their own cleanups with a mock.stop
                 # method so those mocks are not included in the stopall set.
-                super(BaseTestCase, self).addCleanup(mock.patch.stopall)
+                super().addCleanup(mock.patch.stopall)
         else:
             LOG.error('Unable to patch test case. '
                       'mock.patch.stopall cleanup was not registered.')
-        super(BaseTestCase, self).addCleanup(function, *args, **kwargs)
+        super().addCleanup(function, *args, **kwargs)
 
     def setUp(self):
-        super(BaseTestCase, self).setUp()
+        super().setUp()
         self._set_timeout()
         self._fake_output()
         self._fake_logs()

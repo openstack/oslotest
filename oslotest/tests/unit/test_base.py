@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # Copyright 2014 Deutsche Telekom AG
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -80,7 +78,7 @@ class TestBaseTestCase(testtools.TestCase):
 
     def test_mock_patch_cleanup_on_teardown(self):
         # create an object and save its reference
-        class Sub(object):
+        class Sub:
             pass
 
         obj = Sub()
@@ -123,7 +121,7 @@ class TestManualMock(base.BaseTestCase):
         patcher = mock.patch('os.environ.keys')
         patcher.start()
         self.addCleanup(patcher.stop)
-        super(TestManualMock, self).setUp()
+        super().setUp()
         self.useFixture(fixtures.MockPatch('fixtures.Timeout'))
 
     def test_mock_patch_manually(self):

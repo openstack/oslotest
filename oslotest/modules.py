@@ -19,12 +19,12 @@ class DisableModuleFixture(fixtures.Fixture):
     """A fixture to provide support for unloading/disabling modules."""
 
     def __init__(self, module, *args, **kwargs):
-        super(DisableModuleFixture, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.module = module
 
     def setUp(self):
         """Ensure ImportError for the specified module."""
-        super(DisableModuleFixture, self).setUp()
+        super().setUp()
 
         cleared_modules = {}
 
@@ -39,7 +39,7 @@ class DisableModuleFixture(fixtures.Fixture):
         self.addCleanup(sys.modules.update, cleared_modules)
 
 
-class _NoModuleFinder(object):
+class _NoModuleFinder:
     """Disallow further imports of 'module'."""
 
     def __init__(self, module):

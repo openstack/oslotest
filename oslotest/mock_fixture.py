@@ -1,4 +1,3 @@
-
 # Copyright 2017 Cloudbase Solutions Srl
 # All Rights Reserved.
 #
@@ -39,11 +38,11 @@ def _lazy_autospec_method(mocked_method, original_method, eat_self):
     mocked_method._mock_check_sig = _autospeced
 
 
-class _AutospecMockMixin(object):
+class _AutospecMockMixin:
     """Mock object that lazily autospecs the given spec's methods."""
 
     def __init__(self, *args, **kwargs):
-        super(_AutospecMockMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         autospec = kwargs.get('autospec')
         self.__dict__['_autospec'] = autospec
         _mock_methods = self.__dict__['_mock_methods']
@@ -58,7 +57,7 @@ class _AutospecMockMixin(object):
             self.return_value.__dict__['_autospec'] = autospec
 
     def __getattr__(self, name):
-        attr = super(_AutospecMockMixin, self).__getattr__(name)
+        attr = super().__getattr__(name)
 
         original_spec = self.__dict__['_autospec']
         if not original_spec:
@@ -109,7 +108,7 @@ class MockAutospecFixture(fixtures.Fixture):
     """
 
     def setUp(self):
-        super(MockAutospecFixture, self).setUp()
+        super().setUp()
 
         # patch both external and internal usage of Mock / MagicMock.
         self.useFixture(
@@ -169,7 +168,7 @@ class _patch(mock._patch):
                 isinstance(target, type)
             )
 
-            new = super(_patch, self).__enter__()
+            new = super().__enter__()
 
             # NOTE(claudiub): mock.patch.multiple will cause new to be a
             # dict.
@@ -178,7 +177,7 @@ class _patch(mock._patch):
             _lazy_autospec_method(mocked_method, original_attr, eat_self)
             return new
         else:
-            return super(_patch, self).__enter__()
+            return super().__enter__()
 
 
 def _safe_attribute_error_wrapper(func):
