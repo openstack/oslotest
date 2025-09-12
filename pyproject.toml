@@ -1,3 +1,42 @@
 [build-system]
 requires = ["pbr>=6.1.1"]
 build-backend = "pbr.build"
+
+[project]
+name = "oslotest"
+description = "Oslo test framework"
+readme = "README.rst"
+authors = [
+    {name = "OpenStack", email = "openstack-discuss@lists.openstack.org"},
+]
+requires-python = ">=3.10"
+dynamic = ["version", "dependencies"]
+classifiers = [
+    "Environment :: OpenStack",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: Implementation :: CPython",
+]
+
+[project.urls]
+Homepage = "https://docs.openstack.org/oslotest"
+Repository = "https://opendev.org/openstack/oslotest"
+
+[tool.setuptools]
+packages = [
+    "oslotest"
+]
+script-files = [
+    "tools/oslo_debug_helper",
+    "tools/oslo_run_cross_tests",
+    "tools/oslo_run_pre_release_tests",
+]
