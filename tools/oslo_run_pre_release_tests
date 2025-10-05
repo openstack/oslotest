@@ -127,7 +127,7 @@ def main():
         lib_dir = os.getcwd()
     else:
         lib_dir = os.path.join(repo_root, 'openstack', lib_name)
-    print('testing {} in {}'.format(lib_name, lib_dir))
+    print(f'testing {lib_name} in {lib_dir}')
 
     projects = set(conf.consumer)
     if not projects:
@@ -155,7 +155,7 @@ def main():
     # Make sure the lib being tested is set to the reference intended.
     if conf.ref != 'HEAD':
         if conf.verbose:
-            print('ensuring {} is updated to {}'.format(lib_name, conf.ref))
+            print(f'ensuring {lib_name} is updated to {conf.ref}')
         subprocess.check_call(
             ['git', 'checkout', conf.ref],
             cwd=lib_dir,
@@ -177,9 +177,9 @@ def main():
             ).communicate()
         p_log_name = p.split('/')[-1].replace('.', '-')
         for e in conf.env:
-            log_name = 'cross-test-{}-{}.log'.format(p_log_name, e)
+            log_name = f'cross-test-{p_log_name}-{e}.log'
             with open(log_name, 'w') as log_file:
-                print('testing {} in {}, logging to {}'.format(e, p, log_name),
+                print(f'testing {e} in {p}, logging to {log_name}',
                       end=' ')
                 sys.stdout.flush()
                 command = ['oslo_run_cross_tests', proj_dir, e]
