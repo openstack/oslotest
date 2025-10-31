@@ -9,6 +9,5 @@ Using oslotest
    debugging
    testing
    mock-autospec
-   cross-testing
    resources
    history
