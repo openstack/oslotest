@@ -15,9 +15,7 @@ from oslotest import modules
 
 
 class CreateDisableModuleTest(base.BaseTestCase):
-
     def test_disable_module(self):
-
         s = __import__('sys')
         self.assertTrue(s)
 

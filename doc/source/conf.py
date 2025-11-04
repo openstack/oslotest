@@ -57,7 +57,5 @@ openstackdocs_bug_tag = ''
 # sphinxcontrib.apidoc options
 apidoc_module_dir = '../../oslotest'
 apidoc_output_dir = 'reference/api'
-apidoc_excluded_paths = [
-    'tests/*',
-    'tests']
+apidoc_excluded_paths = ['tests/*', 'tests']
 apidoc_separate_modules = True

@@ -19,9 +19,11 @@ _TRUE_VALUES = ('True', 'true', '1', 'yes')
 _FALSE_VALUES = ('False', 'false', '0', 'no')
 _BASE_LOG_LEVELS = ('DEBUG', 'INFO', 'WARN', 'WARNING', 'ERROR', 'CRITICAL')
 _LOG_LEVELS = {n: getattr(logging, n) for n in _BASE_LOG_LEVELS}
-_LOG_LEVELS.update({
-    'TRACE': 5,
-})
+_LOG_LEVELS.update(
+    {
+        'TRACE': 5,
+    }
+)
 
 
 def _try_int(value):
@@ -73,7 +75,7 @@ class ConfigureLogging(fixtures.Fixture):
         elif _os_debug in _LOG_LEVELS:
             self.level = _LOG_LEVELS[_os_debug]
         elif _os_debug and _os_debug not in _FALSE_VALUES:
-            raise ValueError('OS_DEBUG=%s is invalid.' % (_os_debug))
+            raise ValueError(f'OS_DEBUG={_os_debug} is invalid.')
         self.capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
         self.logger = None
 

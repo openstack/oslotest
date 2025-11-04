@@ -19,7 +19,6 @@ from oslotest import createfile
 
 
 class CreateFileWithContentTest(base.BaseTestCase):
-
     def test_create_unicode_files(self):
         f = createfile.CreateFileWithContent(
             "no_approve",
@@ -32,7 +31,9 @@ class CreateFileWithContentTest(base.BaseTestCase):
 
     def test_create_unicode_files_encoding(self):
         f = createfile.CreateFileWithContent(
-            "embarrassed", '⊙﹏⊙', encoding='utf-8',
+            "embarrassed",
+            '⊙﹏⊙',
+            encoding='utf-8',
         )
         f.setUp()
         with open(f.path, 'rb') as f:
@@ -41,7 +42,9 @@ class CreateFileWithContentTest(base.BaseTestCase):
 
     def test_create_bad_encoding(self):
         f = createfile.CreateFileWithContent(
-            "hrm", 'ಠ~ಠ', encoding='ascii',
+            "hrm",
+            'ಠ~ಠ',
+            encoding='ascii',
         )
         self.assertRaises(UnicodeError, f.setUp)
 

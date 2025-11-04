@@ -40,7 +40,6 @@ class Foo:
 
 
 class MockSanityTestCase(testtools.TestCase):
-
     def setUp(self):
         super().setUp()
         self.useFixture(mock_fixture.MockAutospecFixture())
@@ -51,21 +50,39 @@ class MockSanityTestCase(testtools.TestCase):
 
             # check that the methods are callable with correct args.
             mock_method(mock.sentinel.a, mock.sentinel.b, mock.sentinel.c)
-            mock_method(mock.sentinel.a, mock.sentinel.b, mock.sentinel.c,
-                        d=mock.sentinel.d)
-            mock_method.assert_has_calls([
-                mock.call(mock.sentinel.a, mock.sentinel.b, mock.sentinel.c),
-                mock.call(mock.sentinel.a, mock.sentinel.b, mock.sentinel.c,
-                          d=mock.sentinel.d)])
+            mock_method(
+                mock.sentinel.a,
+                mock.sentinel.b,
+                mock.sentinel.c,
+                d=mock.sentinel.d,
+            )
+            mock_method.assert_has_calls(
+                [
+                    mock.call(
+                        mock.sentinel.a, mock.sentinel.b, mock.sentinel.c
+                    ),
+                    mock.call(
+                        mock.sentinel.a,
+                        mock.sentinel.b,
+                        mock.sentinel.c,
+                        d=mock.sentinel.d,
+                    ),
+                ]
+            )
 
             # assert that TypeError is raised if the method signature is not
             # respected.
             self.assertRaises(TypeError, mock_method)
             self.assertRaises(TypeError, mock_method, mock.sentinel.a)
             self.assertRaises(TypeError, mock_method, a=mock.sentinel.a)
-            self.assertRaises(TypeError, mock_method, mock.sentinel.a,
-                              mock.sentinel.b, mock.sentinel.c,
-                              e=mock.sentinel.e)
+            self.assertRaises(
+                TypeError,
+                mock_method,
+                mock.sentinel.a,
+                mock.sentinel.b,
+                mock.sentinel.c,
+                e=mock.sentinel.e,
+            )
 
         # assert that AttributeError is raised if the method does not exist.
         self.assertRaises(AttributeError, getattr, foo, 'lish')
@@ -90,17 +107,21 @@ class MockSanityTestCase(testtools.TestCase):
         self._check_autospeced_foo(foo)
 
     def test_patch_autospec_multiple(self):
-        with mock.patch.multiple(Foo, bar=mock.DEFAULT,
-                                 classic_bar=mock.DEFAULT,
-                                 static_bar=mock.DEFAULT):
+        with mock.patch.multiple(
+            Foo,
+            bar=mock.DEFAULT,
+            classic_bar=mock.DEFAULT,
+            static_bar=mock.DEFAULT,
+        ):
             foo = Foo()
             self._check_autospeced_foo(foo)
 
     @mock.patch.object(Foo, 'static_bar', autospec=False)
     @mock.patch.object(Foo, 'classic_bar', autospec=False)
     @mock.patch.object(Foo, 'bar', autospec=False)
-    def test_patch_autospec_class_false(self, mock_meth, mock_cmeth,
-                                        mock_smeth):
+    def test_patch_autospec_class_false(
+        self, mock_meth, mock_cmeth, mock_smeth
+    ):
         foo = Foo()
         # we're checking that method signature is not enforced.
         foo.bar()

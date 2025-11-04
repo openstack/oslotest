@@ -18,7 +18,6 @@ from oslotest import timeout
 
 
 class TimeoutTestCase(testtools.TestCase):
-
     @mock.patch('os.environ.get')
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
@@ -33,8 +32,9 @@ class TimeoutTestCase(testtools.TestCase):
     @mock.patch('os.environ.get')
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
-    def test_no_timeout(self, fixture_timeout_mock, fixture_mock,
-                        env_get_mock):
+    def test_no_timeout(
+        self, fixture_timeout_mock, fixture_mock, env_get_mock
+    ):
         # Returning 0 means we don't install the timeout
         env_get_mock.return_value = 0
         tc = timeout.Timeout()
@@ -47,7 +47,8 @@ class TimeoutTestCase(testtools.TestCase):
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
     def test_timeout_default(
-            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        self, fixture_timeout_mock, fixture_mock, env_get_mock
+    ):
         env_get_mock.return_value = 5
         tc = timeout.Timeout(default_timeout=5)
         tc.setUp()
@@ -59,7 +60,8 @@ class TimeoutTestCase(testtools.TestCase):
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
     def test_timeout_bad_default(
-            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        self, fixture_timeout_mock, fixture_mock, env_get_mock
+    ):
         env_get_mock.return_value = 'invalid'
         tc = timeout.Timeout(default_timeout='invalid')
         tc.setUp()
@@ -71,7 +73,8 @@ class TimeoutTestCase(testtools.TestCase):
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
     def test_timeout_scaling(
-            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        self, fixture_timeout_mock, fixture_mock, env_get_mock
+    ):
         env_get_mock.return_value = 2
         tc = timeout.Timeout(scaling_factor=1.5)
         tc.setUp()
@@ -83,7 +86,8 @@ class TimeoutTestCase(testtools.TestCase):
     @mock.patch.object(timeout.Timeout, 'useFixture')
     @mock.patch('fixtures.Timeout')
     def test_timeout_bad_scaling(
-            self, fixture_timeout_mock, fixture_mock, env_get_mock):
+        self, fixture_timeout_mock, fixture_mock, env_get_mock
+    ):
         env_get_mock.return_value = 2
         tc = timeout.Timeout(scaling_factor='invalid')
         tc.setUp()

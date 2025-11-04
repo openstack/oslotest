@@ -38,3 +38,17 @@ packages = [
 script-files = [
     "tools/oslo_debug_helper",
 ]
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.format]
+quote-style = "preserve"
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = ["E4", "E5", "E7", "E9", "F", "S", "U"]
+ignore = [
+    # we only use asserts for type narrowing
+    "S101",
+]

@@ -84,6 +84,7 @@ class BaseTestCase(testtools.TestCase):
     .. _fixtures: https://pypi.org/project/fixtures
 
     """
+
     DEFAULT_TIMEOUT = 0
     TIMEOUT_SCALING_FACTOR = 1
 
@@ -100,8 +101,7 @@ class BaseTestCase(testtools.TestCase):
         # NOTE(dims): This is a hack for Mitaka. We'll need to undo this as
         # early as possible in Newton and advertise that this hack will not
         # be supported anymore.
-        if (hasattr(self, '_cleanups') and
-                isinstance(self._cleanups, list)):
+        if hasattr(self, '_cleanups') and isinstance(self._cleanups, list):
             if not self._cleanups:
                 # Ensure that the mock.patch.stopall cleanup is registered
                 # before any addCleanup() methods have a chance to register
@@ -110,8 +110,10 @@ class BaseTestCase(testtools.TestCase):
                 # method so those mocks are not included in the stopall set.
                 super().addCleanup(mock.patch.stopall)
         else:
-            LOG.error('Unable to patch test case. '
-                      'mock.patch.stopall cleanup was not registered.')
+            LOG.error(
+                'Unable to patch test case. '
+                'mock.patch.stopall cleanup was not registered.'
+            )
         super().addCleanup(function, *args, **kwargs)
 
     def setUp(self):
@@ -123,10 +125,12 @@ class BaseTestCase(testtools.TestCase):
         self.useFixture(fixtures.TempHomeDir())
 
     def _set_timeout(self):
-        self.useFixture(timeout.Timeout(
-            default_timeout=self.DEFAULT_TIMEOUT,
-            scaling_factor=self.TIMEOUT_SCALING_FACTOR,
-        ))
+        self.useFixture(
+            timeout.Timeout(
+                default_timeout=self.DEFAULT_TIMEOUT,
+                scaling_factor=self.TIMEOUT_SCALING_FACTOR,
+            )
+        )
 
     def _fake_output(self):
         self.output_fixture = self.useFixture(output.CaptureOutput())
@@ -155,11 +159,13 @@ class BaseTestCase(testtools.TestCase):
             else:
                 basename, contents = f
                 encoding = default_encoding
-            fix = self.useFixture(createfile.CreateFileWithContent(
-                filename=basename,
-                contents=contents,
-                ext=ext,
-                encoding=encoding,
-            ))
+            fix = self.useFixture(
+                createfile.CreateFileWithContent(
+                    filename=basename,
+                    contents=contents,
+                    ext=ext,
+                    encoding=encoding,
+                )
+            )
             tempfiles.append(fix.path)
         return tempfiles

@@ -24,7 +24,6 @@ from oslotest import base
 
 
 class TestBaseTestCase(testtools.TestCase):
-
     class FakeTestCase(base.BaseTestCase):
         def test_fake_test(self):
             pass
@@ -44,7 +43,9 @@ class TestBaseTestCase(testtools.TestCase):
     def test_fake_logs_default(self, env_get_mock):
         # without debug and log capture
         env_get_mock.side_effect = lambda value, default=None: {
-            'OS_DEBUG': 0, 'OS_LOG_CAPTURE': 0}.get(value, default)
+            'OS_DEBUG': 0,
+            'OS_LOG_CAPTURE': 0,
+        }.get(value, default)
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
@@ -56,20 +57,24 @@ class TestBaseTestCase(testtools.TestCase):
     @mock.patch('logging.basicConfig')
     def test_fake_logs_with_debug(self, basic_logger_mock, env_get_mock):
         env_get_mock.side_effect = lambda value, default=None: {
-            'OS_DEBUG': 'True', 'OS_LOG_CAPTURE': 0}.get(value, default)
+            'OS_DEBUG': 'True',
+            'OS_LOG_CAPTURE': 0,
+        }.get(value, default)
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
         env_get_mock.assert_any_call('OS_DEBUG')
-        basic_logger_mock.assert_called_once_with(format=base._LOG_FORMAT,
-                                                  level=logging.DEBUG)
+        basic_logger_mock.assert_called_once_with(
+            format=base._LOG_FORMAT, level=logging.DEBUG
+        )
 
     @mock.patch('os.environ.get')
     @mock.patch.object(FakeTestCase, 'useFixture')
     def test_fake_logs_with_log_cap(self, fixture_mock, env_get_mock):
-        env_get_mock.side_effect = lambda value: {'OS_DEBUG': 0,
-                                                  'OS_LOG_CAPTURE': 'True'
-                                                  }.get(value)
+        env_get_mock.side_effect = lambda value: {
+            'OS_DEBUG': 0,
+            'OS_LOG_CAPTURE': 'True',
+        }.get(value)
         tc = self.FakeTestCase("test_fake_test")
         tc.setUp()
         env_get_mock.assert_any_call('OS_LOG_CAPTURE')
@@ -114,7 +119,6 @@ class TestBaseTestCase(testtools.TestCase):
 
 
 class TestManualMock(base.BaseTestCase):
-
     def setUp(self):
         # Create a cleanup to undo a patch() call *before* calling the
         # base class version of setup().
@@ -161,8 +165,9 @@ class TestTempFiles(base.BaseTestCase):
                 contents = f.read()
             if not isinstance(raw_contents, str):
                 raw_contents = str(raw_contents, encoding=raw_encoding)
-            self.assertEqual(str(contents, encoding=raw_encoding),
-                             raw_contents)
+            self.assertEqual(
+                str(contents, encoding=raw_encoding), raw_contents
+            )
 
     def test_create_bad_encoding(self):
         files = [["hrm", 'ಠ~ಠ', 'ascii']]

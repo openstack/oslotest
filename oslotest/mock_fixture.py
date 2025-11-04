@@ -72,8 +72,7 @@ class _AutospecMockMixin:
         if callable(original_attr):
             # lazily autospec callable attribute.
             eat_self = mock._must_skip(
-                original_spec, name,
-                isinstance(original_spec, type)
+                original_spec, name, isinstance(original_spec, type)
             )
 
             _lazy_autospec_method(attr, original_attr, eat_self)
@@ -112,13 +111,11 @@ class MockAutospecFixture(fixtures.Fixture):
 
         # patch both external and internal usage of Mock / MagicMock.
         self.useFixture(
-            fixtures.MonkeyPatch(
-                'unittest.mock.Mock',
-                _AutospecMock))
+            fixtures.MonkeyPatch('unittest.mock.Mock', _AutospecMock)
+        )
         self.useFixture(
-            fixtures.MonkeyPatch(
-                'unittest.mock.MagicMock',
-                _AutospecMagicMock))
+            fixtures.MonkeyPatch('unittest.mock.MagicMock', _AutospecMagicMock)
+        )
 
 
 class _patch(mock._patch):
@@ -140,8 +137,9 @@ class _patch(mock._patch):
         autospec = True if self.autospec is None else self.autospec
 
         # in some cases, autospec cannot be set to True.
-        skip_autospec = (getattr(self, attr) for attr in
-                         ['new_callable', 'create', 'spec'])
+        skip_autospec = (
+            getattr(self, attr) for attr in ['new_callable', 'create', 'spec']
+        )
         # NOTE(claudiub): The "new" argument is always mock.DEFAULT, unless
         # explicitly set otherwise.
         if self.new is not mock.DEFAULT or any(skip_autospec):
@@ -163,17 +161,16 @@ class _patch(mock._patch):
             target = self.getter()
             original_attr = getattr(target, self.attribute)
             eat_self = mock._must_skip(
-                target,
-                self.attribute,
-                isinstance(target, type)
+                target, self.attribute, isinstance(target, type)
             )
 
             new = super().__enter__()
 
             # NOTE(claudiub): mock.patch.multiple will cause new to be a
             # dict.
-            mocked_method = (new[self.attribute] if isinstance(new, dict)
-                             else new)
+            mocked_method = (
+                new[self.attribute] if isinstance(new, dict) else new
+            )
             _lazy_autospec_method(mocked_method, original_attr, eat_self)
             return new
         else:
@@ -199,4 +196,5 @@ def patch_mock_module():
     # as it will try to copy the partial function's __name__ (which they do
     # not have).
     mock._copy_func_details = _safe_attribute_error_wrapper(
-        mock._copy_func_details)
+        mock._copy_func_details
+    )

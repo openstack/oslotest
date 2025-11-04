@@ -58,8 +58,9 @@ class CreateFileWithContent(fixtures.Fixture):
         if isinstance(contents, str):
             contents = contents.encode(self._encoding)
         if not os.path.isabs(self._filename):
-            (fd, self.path) = tempfile.mkstemp(prefix=self._filename,
-                                               suffix=self._ext)
+            fd, self.path = tempfile.mkstemp(
+                prefix=self._filename, suffix=self._ext
+            )
         else:
             self.path = self._filename + self._ext
             fd = os.open(self.path, os.O_CREAT | os.O_WRONLY)

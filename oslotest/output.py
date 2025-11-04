@@ -47,13 +47,15 @@ class CaptureOutput(fixtures.Fixture):
     def __init__(self, do_stdout=None, do_stderr=None):
         super().__init__()
         if do_stdout is None:
-            self.do_stdout = (os.environ.get('OS_STDOUT_CAPTURE')
-                              in _TRUE_VALUES)
+            self.do_stdout = (
+                os.environ.get('OS_STDOUT_CAPTURE') in _TRUE_VALUES
+            )
         else:
             self.do_stdout = do_stdout
         if do_stderr is None:
-            self.do_stderr = (os.environ.get('OS_STDERR_CAPTURE')
-                              in _TRUE_VALUES)
+            self.do_stderr = (
+                os.environ.get('OS_STDERR_CAPTURE') in _TRUE_VALUES
+            )
         else:
             self.do_stderr = do_stderr
         self.stdout = None

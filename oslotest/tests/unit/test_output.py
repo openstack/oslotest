@@ -19,7 +19,6 @@ from oslotest import output
 
 
 class CaptureOutputTest(testtools.TestCase):
-
     @mock.patch('os.environ')
     def test_disabled_env(self, mock_env):
         mock_env.get.return_value = ''

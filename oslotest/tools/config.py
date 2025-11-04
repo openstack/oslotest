@@ -10,8 +10,7 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-"""Utilities functions for working with oslo.config from the tool scripts.
-"""
+"""Utilities functions for working with oslo.config from the tool scripts."""
 
 import os
 
@@ -38,9 +37,7 @@ def get_config_parser():
 def parse_arguments(conf):
     # Look for a few configuration files, and load the ones we find.
     default_config_files = [
-        f
-        for f in DEFAULT_CONFIG_FILES
-        if os.path.exists(f)
+        f for f in DEFAULT_CONFIG_FILES if os.path.exists(f)
     ]
     return conf(
         project='oslo',
