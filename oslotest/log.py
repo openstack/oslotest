@@ -12,6 +12,7 @@
 
 import logging
 import os
+from typing import Any
 
 import fixtures
 
@@ -26,7 +27,7 @@ _LOG_LEVELS.update(
 )
 
 
-def _try_int(value):
+def _try_int(value: Any) -> int | None:
     """Try to make some value into an int."""
     try:
         return int(value)
@@ -62,10 +63,10 @@ class ConfigureLogging(fixtures.Fixture):
     DEFAULT_FORMAT = "%(levelname)8s [%(name)s] %(message)s"
     """Default log format"""
 
-    def __init__(self, format=DEFAULT_FORMAT):
+    def __init__(self, format: str = DEFAULT_FORMAT) -> None:
         super().__init__()
         self._format = format
-        self.level = None
+        self.level = 0
         _os_debug = os.environ.get('OS_DEBUG')
         _os_level = _try_int(_os_debug)
         if _os_debug in _TRUE_VALUES:
@@ -77,9 +78,9 @@ class ConfigureLogging(fixtures.Fixture):
         elif _os_debug and _os_debug not in _FALSE_VALUES:
             raise ValueError(f'OS_DEBUG={_os_debug} is invalid.')
         self.capture_logs = os.environ.get('OS_LOG_CAPTURE') in _TRUE_VALUES
-        self.logger = None
+        self.logger: fixtures.FakeLogger | None = None
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         if self.capture_logs:
             self.logger = self.useFixture(

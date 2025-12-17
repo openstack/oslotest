@@ -15,7 +15,7 @@
 import logging
 from unittest import mock
 
-import testtools
+import testtools  # type: ignore[import-untyped]
 
 from oslotest import log
 

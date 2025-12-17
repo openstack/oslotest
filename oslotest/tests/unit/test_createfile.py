@@ -25,8 +25,8 @@ class CreateFileWithContentTest(base.BaseTestCase):
             'ಠ_ಠ',
         )
         f.setUp()
-        with open(f.path, 'rb') as f:
-            contents = f.read()
+        with open(f.path, 'rb') as fh:
+            contents = fh.read()
         self.assertEqual('ಠ_ಠ', str(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
@@ -36,8 +36,8 @@ class CreateFileWithContentTest(base.BaseTestCase):
             encoding='utf-8',
         )
         f.setUp()
-        with open(f.path, 'rb') as f:
-            contents = f.read()
+        with open(f.path, 'rb') as fh:
+            contents = fh.read()
         self.assertEqual('⊙﹏⊙', str(contents, encoding='utf-8'))
 
     def test_create_bad_encoding(self):

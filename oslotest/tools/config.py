@@ -13,8 +13,9 @@
 """Utilities functions for working with oslo.config from the tool scripts."""
 
 import os
+from typing import TypeVar
 
-from oslo_config import cfg
+from oslo_config import cfg  # type: ignore[import-untyped]
 
 DEFAULT_CONFIG_FILES = [
     './oslo.conf',
@@ -22,7 +23,7 @@ DEFAULT_CONFIG_FILES = [
 ]
 
 
-def get_config_parser():
+def get_config_parser() -> cfg.ConfigOpts:
     conf = cfg.ConfigOpts()
     conf.register_cli_opt(
         cfg.StrOpt(
@@ -34,12 +35,14 @@ def get_config_parser():
     return conf
 
 
-def parse_arguments(conf):
+_ConfigOptT = TypeVar('_ConfigOptT', bound=cfg.ConfigOpts)
+
+
+def parse_arguments(conf: type[_ConfigOptT]) -> _ConfigOptT:
     # Look for a few configuration files, and load the ones we find.
     default_config_files = [
         f for f in DEFAULT_CONFIG_FILES if os.path.exists(f)
     ]
-    return conf(
-        project='oslo',
-        default_config_files=default_config_files,
+    return conf(  # type: ignore
+        project='oslo', default_config_files=default_config_files
     )

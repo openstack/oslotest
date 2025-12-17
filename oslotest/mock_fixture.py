@@ -13,22 +13,33 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+from __future__ import annotations
+
+from collections.abc import Callable
 import functools
+from typing import Any, TypeVar, TYPE_CHECKING
 from unittest import mock
 
 import fixtures
 
+_F = TypeVar('_F', bound=Callable[..., Any])
+_T = TypeVar('_T')
 
-def _lazy_autospec_method(mocked_method, original_method, eat_self):
+
+def _lazy_autospec_method(
+    mocked_method: Any,
+    original_method: Any,
+    eat_self: bool,
+) -> None:
     if mocked_method._mock_check_sig.__dict__.get('autospeced'):
         return
 
-    _lazy_autospec = mock.create_autospec(original_method)
+    _lazy_autospec: Any = mock.create_autospec(original_method)
     if eat_self:
         # consume self argument.
         _lazy_autospec = functools.partial(_lazy_autospec, None)
 
-    def _autospeced(*args, **kwargs):
+    def _autospeced(*args: Any, **kwargs: Any) -> None:
         _lazy_autospec(*args, **kwargs)
 
     # _mock_check_sig is called by the mock's __call__ method.
@@ -41,7 +52,10 @@ def _lazy_autospec_method(mocked_method, original_method, eat_self):
 class _AutospecMockMixin:
     """Mock object that lazily autospecs the given spec's methods."""
 
-    def __init__(self, *args, **kwargs):
+    # These are defined by mock.Mock but we need to declare them for typing
+    return_value: Any
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
         autospec = kwargs.get('autospec')
         self.__dict__['_autospec'] = autospec
@@ -56,8 +70,8 @@ class _AutospecMockMixin:
         if autospec:
             self.return_value.__dict__['_autospec'] = autospec
 
-    def __getattr__(self, name):
-        attr = super().__getattr__(name)
+    def __getattr__(self, name: str) -> Any:
+        attr = super().__getattr__(name)  # type: ignore[misc]
 
         original_spec = self.__dict__['_autospec']
         if not original_spec:
@@ -71,7 +85,8 @@ class _AutospecMockMixin:
         original_attr = getattr(original_spec, name)
         if callable(original_attr):
             # lazily autospec callable attribute.
-            eat_self = mock._must_skip(
+            # NOTE: _must_skip is a private function in the mock module
+            eat_self = mock._must_skip(  # type: ignore[attr-defined]
                 original_spec, name, isinstance(original_spec, type)
             )
 
@@ -106,7 +121,7 @@ class MockAutospecFixture(fixtures.Fixture):
           mocked method's signature is also checked.
     """
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
 
         # patch both external and internal usage of Mock / MagicMock.
@@ -118,7 +133,16 @@ class MockAutospecFixture(fixtures.Fixture):
         )
 
 
-class _patch(mock._patch):
+if TYPE_CHECKING:
+    Base = mock._patch
+else:
+    # as of Python 3.13 this is not subscriptable at runtime
+    class Base(mock._patch):
+        def __class_getitem__(cls, _):
+            return cls
+
+
+class _patch(Base[_T]):
     """Patch class with working autospec functionality.
 
     Currently, mock.patch functionality doesn't handle the autospec parameter
@@ -128,7 +152,7 @@ class _patch(mock._patch):
     https://github.com/testing-cabal/mock/issues/396
     """
 
-    def __enter__(self):
+    def __enter__(self) -> _T:
         # NOTE(claudiub): we're doing the autospec checks here so unit tests
         # have a chance to set up mocks in advance (e.g.: mocking platform
         # specific libraries, which would cause the patch to fail otherwise).
@@ -160,7 +184,8 @@ class _patch(mock._patch):
         if autospec:
             target = self.getter()
             original_attr = getattr(target, self.attribute)
-            eat_self = mock._must_skip(
+            # NOTE: _must_skip is a private function in the mock module
+            eat_self = mock._must_skip(  # type: ignore[attr-defined]
                 target, self.attribute, isinstance(target, type)
             )
 
@@ -177,24 +202,26 @@ class _patch(mock._patch):
             return super().__enter__()
 
 
-def _safe_attribute_error_wrapper(func):
-    def wrapper(*args, **kwargs):
+def _safe_attribute_error_wrapper(func: _F) -> _F:
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         try:
             return func(*args, **kwargs)
         except AttributeError:
             pass
 
-    return wrapper
+    return wrapper  # type: ignore[return-value]
 
 
-def patch_mock_module():
+def patch_mock_module() -> None:
     """Replaces the mock.patch class."""
-    mock._patch = _patch
+    # NOTE: _patch is a private class in the mock module
+    mock._patch = _patch  # type: ignore[misc]
 
     # NOTE(claudiub): mock cannot autospec partial functions properly,
     # especially those created by LazyLoader objects (scheduler client),
     # as it will try to copy the partial function's __name__ (which they do
     # not have).
-    mock._copy_func_details = _safe_attribute_error_wrapper(
-        mock._copy_func_details
+    # NOTE: _copy_func_details is a private function in the mock module
+    mock._copy_func_details = _safe_attribute_error_wrapper(  # type: ignore[attr-defined]
+        mock._copy_func_details  # type: ignore[attr-defined]
     )

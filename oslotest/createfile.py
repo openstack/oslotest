@@ -32,10 +32,6 @@ class CreateFileWithContent(fixtures.Fixture):
     :class:`fixtures.NestedTempfile` to set the temporary directory
     somewhere safe and to ensure the files are cleaned up.
 
-    .. py:attribute:: path
-
-       The canonical name of the file created.
-
     :param filename: Base file name or full literal path to the file
         to be created.
     :param contents: The data to write to the file. Unicode data will
@@ -43,16 +39,24 @@ class CreateFileWithContent(fixtures.Fixture):
     :param ext: An extension to add to filename.
     :param encoding: An encoding to use for unicode data (ignored for
         byte strings).
-
     """
 
-    def __init__(self, filename, contents, ext='.conf', encoding='utf-8'):
+    #: The canonical name of the file created.
+    path: str
+
+    def __init__(
+        self,
+        filename: str,
+        contents: str | bytes,
+        ext: str = '.conf',
+        encoding: str = 'utf-8',
+    ) -> None:
         self._filename = filename
         self._contents = contents
         self._ext = ext
         self._encoding = encoding
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         contents = self._contents
         if isinstance(contents, str):

@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import testtools
+import testtools  # type: ignore[import-untyped]
 from unittest import mock
 
 from oslotest import mock_fixture
@@ -124,16 +124,16 @@ class MockSanityTestCase(testtools.TestCase):
     ):
         foo = Foo()
         # we're checking that method signature is not enforced.
-        foo.bar()
+        foo.bar()  # type: ignore[call-arg]
         mock_meth.assert_called_once_with()
-        foo.classic_bar()
+        foo.classic_bar()  # type: ignore[call-arg]
         mock_cmeth.assert_called_once_with()
-        foo.static_bar()
+        foo.static_bar()  # type: ignore[call-arg]
         mock_smeth.assert_called_once_with()
 
     @mock.patch.object(Foo, 'lish', create=True)
     def test_patch_create(self, mock_lish):
         foo = Foo()
 
-        foo.lish()
+        foo.lish()  # type: ignore[attr-defined]
         mock_lish.assert_called_once_with()

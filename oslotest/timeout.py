@@ -22,7 +22,11 @@ class Timeout(fixtures.Fixture):
 
     """
 
-    def __init__(self, default_timeout=0, scaling_factor=1):
+    def __init__(
+        self,
+        default_timeout: int | float = 0,
+        scaling_factor: int | float = 1,
+    ) -> None:
         super().__init__()
         try:
             self._default_timeout = int(default_timeout)
@@ -31,7 +35,7 @@ class Timeout(fixtures.Fixture):
             self._default_timeout = 0
         self._scaling_factor = scaling_factor
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         test_timeout = os.environ.get('OS_TEST_TIMEOUT', self._default_timeout)
         try:

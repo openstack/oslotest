@@ -10,7 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from collections.abc import Sequence
+from importlib.machinery import ModuleSpec
 import sys
+from types import ModuleType
 
 import fixtures
 
@@ -18,11 +21,11 @@ import fixtures
 class DisableModuleFixture(fixtures.Fixture):
     """A fixture to provide support for unloading/disabling modules."""
 
-    def __init__(self, module, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, module: str):
+        super().__init__()
         self.module = module
 
-    def setUp(self):
+    def setUp(self) -> None:
         """Ensure ImportError for the specified module."""
         super().setUp()
 
@@ -42,9 +45,16 @@ class DisableModuleFixture(fixtures.Fixture):
 class _NoModuleFinder:
     """Disallow further imports of 'module'."""
 
-    def __init__(self, module):
+    def __init__(self, module: str) -> None:
         self.module = module
 
-    def find_spec(self, fullname, path, target):
+    def find_spec(
+        self,
+        fullname: str,
+        path: Sequence[str] | None,
+        target: ModuleType | None = None,
+        /,
+    ) -> ModuleSpec | None:
         if fullname == self.module or fullname.startswith(self.module + '.'):
             raise ImportError
+        return None

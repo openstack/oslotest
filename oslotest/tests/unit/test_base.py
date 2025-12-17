@@ -14,11 +14,12 @@
 
 import logging
 import os
+from typing import Any
 import unittest
 from unittest import mock
 
 import fixtures
-import testtools
+import testtools  # type: ignore[import-untyped]
 
 from oslotest import base
 
@@ -84,7 +85,8 @@ class TestBaseTestCase(testtools.TestCase):
     def test_mock_patch_cleanup_on_teardown(self):
         # create an object and save its reference
         class Sub:
-            pass
+            value: Any
+            backup: Any
 
         obj = Sub()
         obj.value = obj.backup = object()
@@ -138,7 +140,7 @@ class TestManualMock(base.BaseTestCase):
 
 class TestTempFiles(base.BaseTestCase):
     def test_create_unicode_files(self):
-        files = [["no_approve", 'ಠ_ಠ']]
+        files = [('no_approve', 'ಠ_ಠ')]
         temps = self.create_tempfiles(files)
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
@@ -146,7 +148,7 @@ class TestTempFiles(base.BaseTestCase):
         self.assertEqual('ಠ_ಠ', str(contents, encoding='utf-8'))
 
     def test_create_unicode_files_encoding(self):
-        files = [["embarrassed", '⊙﹏⊙', 'utf-8']]
+        files = [('embarrassed', '⊙﹏⊙', 'utf-8')]
         temps = self.create_tempfiles(files)
         self.assertEqual(1, len(temps))
         with open(temps[0], 'rb') as f:
@@ -155,8 +157,8 @@ class TestTempFiles(base.BaseTestCase):
 
     def test_create_unicode_files_multi_encoding(self):
         files = [
-            ["embarrassed", '⊙﹏⊙', 'utf-8'],
-            ['abc', 'abc', 'ascii'],
+            ('embarrassed', '⊙﹏⊙', 'utf-8'),
+            ('abc', 'abc', 'ascii'),
         ]
         temps = self.create_tempfiles(files)
         self.assertEqual(2, len(temps))
@@ -170,16 +172,16 @@ class TestTempFiles(base.BaseTestCase):
             )
 
     def test_create_bad_encoding(self):
-        files = [["hrm", 'ಠ~ಠ', 'ascii']]
+        files = [['hrm', 'ಠ~ಠ', 'ascii']]
         self.assertRaises(UnicodeError, self.create_tempfiles, files)
 
     def test_prefix(self):
-        files = [["testing", '']]
+        files = [('testing', '')]
         temps = self.create_tempfiles(files)
         self.assertEqual(1, len(temps))
         basename = os.path.basename(temps[0])
         self.assertTrue(basename.startswith('testing'))
 
     def test_wrong_length(self):
-        files = [["testing"]]
+        files = [('testing',)]
         self.assertRaises(ValueError, self.create_tempfiles, files)

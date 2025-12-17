@@ -15,7 +15,9 @@
 
 """Common utilities used in testing"""
 
+from collections.abc import Callable, Sequence
 import logging
+from typing import Any
 from unittest import mock
 
 import fixtures
@@ -24,15 +26,15 @@ from oslotest import log
 from oslotest import output
 from oslotest import timeout
 
-import testtools
+import testtools  # type: ignore[import-untyped]
 
 LOG = logging.getLogger(__name__)
 
 _TRUE_VALUES = ('True', 'true', '1', 'yes')
-_LOG_FORMAT = "%(levelname)8s [%(name)s] %(message)s"
+_LOG_FORMAT = '%(levelname)8s [%(name)s] %(message)s'
 
 
-class BaseTestCase(testtools.TestCase):
+class BaseTestCase(testtools.TestCase):  # type: ignore
     """Base class for unit test classes.
 
     If the environment variable ``OS_TEST_TIMEOUT`` is set to an
@@ -88,8 +90,16 @@ class BaseTestCase(testtools.TestCase):
     DEFAULT_TIMEOUT = 0
     TIMEOUT_SCALING_FACTOR = 1
 
-    def __init__(self, *args, **kwds):
-        super().__init__(*args, **kwds)
+    # FIXME(stephenfin): This should only accept two kwargs:
+    # - methodName (from stdlib)
+    # - runTest (from testtools)
+    # But we need to type testtools first
+    def __init__(
+        self,
+        methodName: str = 'runTest',
+        runTest: Any = None,
+    ) -> None:
+        super().__init__(methodName=methodName, runTest=runTest)
 
         # This is the number of characters shown when two objects do not
         # match for assertDictEqual, assertMultiLineEqual, and
@@ -97,7 +107,9 @@ class BaseTestCase(testtools.TestCase):
         # low for comparing most dicts
         self.maxDiff = 10000
 
-    def addCleanup(self, function, *args, **kwargs):
+    def addCleanup(
+        self, cleanup: Callable[..., Any], *args: Any, **kwargs: Any
+    ) -> None:
         # NOTE(dims): This is a hack for Mitaka. We'll need to undo this as
         # early as possible in Newton and advertise that this hack will not
         # be supported anymore.
@@ -114,9 +126,9 @@ class BaseTestCase(testtools.TestCase):
                 'Unable to patch test case. '
                 'mock.patch.stopall cleanup was not registered.'
             )
-        super().addCleanup(function, *args, **kwargs)
+        super().addCleanup(cleanup, *args, **kwargs)
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         self._set_timeout()
         self._fake_output()
@@ -124,7 +136,7 @@ class BaseTestCase(testtools.TestCase):
         self.useFixture(fixtures.NestedTempfile())
         self.useFixture(fixtures.TempHomeDir())
 
-    def _set_timeout(self):
+    def _set_timeout(self) -> None:
         self.useFixture(
             timeout.Timeout(
                 default_timeout=self.DEFAULT_TIMEOUT,
@@ -132,24 +144,28 @@ class BaseTestCase(testtools.TestCase):
             )
         )
 
-    def _fake_output(self):
+    def _fake_output(self) -> None:
         self.output_fixture = self.useFixture(output.CaptureOutput())
 
-    def _fake_logs(self):
+    def _fake_logs(self) -> None:
         self.log_fixture = self.useFixture(log.ConfigureLogging())
 
-    def create_tempfiles(self, files, ext='.conf', default_encoding='utf-8'):
+    def create_tempfiles(
+        self,
+        files: Sequence[
+            tuple[str, str | bytes, str] | tuple[str, str | bytes]
+        ],
+        ext: str = '.conf',
+        default_encoding: str = 'utf-8',
+    ) -> list[str]:
         """Safely create temporary files.
 
-        :param files: Sequence of tuples containing (filename, file_contents).
-        :type files: list of tuple
+        :param files: Sequence of tuples containing ``(filename,
+            file_contents)`` or ``(filename, file_contents, encoding)``.
         :param ext: File name extension for the temporary file.
-        :type ext: str
         :param default_encoding: Default file content encoding when it is
-                                 not provided, used to decode the tempfile
-                                 contents from a text string into a binary
-                                 string.
-        :type default_encoding: str
+            not provided. Used to decode the tempfile contents from a text
+            string into a binary string.
         :return: A list of str with the names of the files created.
         """
         tempfiles = []

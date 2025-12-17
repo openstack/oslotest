@@ -11,6 +11,7 @@
 # under the License.
 
 import os
+from typing import IO
 
 import fixtures
 
@@ -44,7 +45,9 @@ class CaptureOutput(fixtures.Fixture):
 
     """
 
-    def __init__(self, do_stdout=None, do_stderr=None):
+    def __init__(
+        self, do_stdout: bool | None = None, do_stderr: bool | None = None
+    ):
         super().__init__()
         if do_stdout is None:
             self.do_stdout = (
@@ -58,10 +61,10 @@ class CaptureOutput(fixtures.Fixture):
             )
         else:
             self.do_stderr = do_stderr
-        self.stdout = None
-        self.stderr = None
+        self.stdout: IO[str] | None = None
+        self.stderr: IO[str] | None = None
 
-    def setUp(self):
+    def setUp(self) -> None:
         super().setUp()
         if self.do_stdout:
             self._stdout_fixture = fixtures.StringStream('stdout')

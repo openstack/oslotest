@@ -12,7 +12,7 @@
 
 from unittest import mock
 
-import testtools
+import testtools  # type: ignore[import-untyped]
 
 from oslotest import timeout
 
@@ -63,7 +63,7 @@ class TimeoutTestCase(testtools.TestCase):
         self, fixture_timeout_mock, fixture_mock, env_get_mock
     ):
         env_get_mock.return_value = 'invalid'
-        tc = timeout.Timeout(default_timeout='invalid')
+        tc = timeout.Timeout(default_timeout='invalid')  # type: ignore
         tc.setUp()
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
         self.assertEqual(0, fixture_timeout_mock.call_count)
@@ -89,7 +89,7 @@ class TimeoutTestCase(testtools.TestCase):
         self, fixture_timeout_mock, fixture_mock, env_get_mock
     ):
         env_get_mock.return_value = 2
-        tc = timeout.Timeout(scaling_factor='invalid')
+        tc = timeout.Timeout(scaling_factor='invalid')  # type: ignore
         tc.setUp()
         env_get_mock.assert_called_once_with('OS_TEST_TIMEOUT', 0)
         fixture_timeout_mock.assert_called_once_with(2, gentle=True)
