@@ -26,7 +26,7 @@ from oslotest import log
 from oslotest import output
 from oslotest import timeout
 
-import testtools  # type: ignore[import-untyped]
+import testtools
 
 LOG = logging.getLogger(__name__)
 

@@ -13,7 +13,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import testtools  # type: ignore[import-untyped]
+import testtools
 from unittest import mock
 
 from oslotest import mock_fixture

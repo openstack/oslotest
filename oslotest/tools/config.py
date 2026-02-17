@@ -15,7 +15,7 @@
 import os
 from typing import TypeVar
 
-from oslo_config import cfg  # type: ignore[import-untyped]
+from oslo_config import cfg
 
 DEFAULT_CONFIG_FILES = [
     './oslo.conf',

@@ -12,7 +12,7 @@
 
 from unittest import mock
 
-import testtools  # type: ignore[import-untyped]
+import testtools
 
 from oslotest import timeout
 

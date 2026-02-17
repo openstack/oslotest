@@ -17,12 +17,11 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import functools
-from typing import Any, TypeVar, TYPE_CHECKING
+from typing import Any, ParamSpec, TypeVar, TYPE_CHECKING
 from unittest import mock
 
 import fixtures
 
-_F = TypeVar('_F', bound=Callable[..., Any])
 _T = TypeVar('_T')
 
 
@@ -202,14 +201,20 @@ class _patch(Base[_T]):
             return super().__enter__()
 
 
-def _safe_attribute_error_wrapper(func: _F) -> _F:
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
+P = ParamSpec('P')
+R = TypeVar('R')
+
+
+def _safe_attribute_error_wrapper(
+    func: Callable[P, R],
+) -> Callable[P, R | None]:
+    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | None:
         try:
             return func(*args, **kwargs)
         except AttributeError:
-            pass
+            return None
 
-    return wrapper  # type: ignore[return-value]
+    return wrapper
 
 
 def patch_mock_module() -> None:

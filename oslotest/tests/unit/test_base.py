@@ -19,7 +19,7 @@ import unittest
 from unittest import mock
 
 import fixtures
-import testtools  # type: ignore[import-untyped]
+import testtools
 
 from oslotest import base
 
