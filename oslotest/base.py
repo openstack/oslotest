@@ -34,7 +34,7 @@ _TRUE_VALUES = ('True', 'true', '1', 'yes')
 _LOG_FORMAT = '%(levelname)8s [%(name)s] %(message)s'
 
 
-class BaseTestCase(testtools.TestCase):  # type: ignore
+class BaseTestCase(testtools.TestCase):
     """Base class for unit test classes.
 
     If the environment variable ``OS_TEST_TIMEOUT`` is set to an
@@ -108,7 +108,11 @@ class BaseTestCase(testtools.TestCase):  # type: ignore
         self.maxDiff = 10000
 
     def addCleanup(
-        self, cleanup: Callable[..., Any], *args: Any, **kwargs: Any
+        self,
+        cleanup: Callable[..., object],
+        /,
+        *args: object,
+        **kwargs: object,
     ) -> None:
         # NOTE(dims): This is a hack for Mitaka. We'll need to undo this as
         # early as possible in Newton and advertise that this hack will not
