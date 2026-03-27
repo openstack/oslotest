@@ -15,9 +15,8 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 import functools
-from typing import Any, ParamSpec, TypeVar, TYPE_CHECKING
+from typing import Any, TypeVar, TYPE_CHECKING
 from unittest import mock
 
 import fixtures
@@ -201,32 +200,7 @@ class _patch(Base[_T]):
             return super().__enter__()
 
 
-P = ParamSpec('P')
-R = TypeVar('R')
-
-
-def _safe_attribute_error_wrapper(
-    func: Callable[P, R],
-) -> Callable[P, R | None]:
-    def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | None:
-        try:
-            return func(*args, **kwargs)
-        except AttributeError:
-            return None
-
-    return wrapper
-
-
 def patch_mock_module() -> None:
     """Replaces the mock.patch class."""
     # NOTE: _patch is a private class in the mock module
     mock._patch = _patch  # type: ignore[misc]
-
-    # NOTE(claudiub): mock cannot autospec partial functions properly,
-    # especially those created by LazyLoader objects (scheduler client),
-    # as it will try to copy the partial function's __name__ (which they do
-    # not have).
-    # NOTE: _copy_func_details is a private function in the mock module
-    mock._copy_func_details = _safe_attribute_error_wrapper(  # type: ignore[attr-defined]
-        mock._copy_func_details  # type: ignore[attr-defined]
-    )
