@@ -88,12 +88,8 @@ class BaseTestCase(testtools.TestCase):
     """
 
     DEFAULT_TIMEOUT = 0
-    TIMEOUT_SCALING_FACTOR = 1
+    TIMEOUT_SCALING_FACTOR: int | float = 1
 
-    # FIXME(stephenfin): This should only accept two kwargs:
-    # - methodName (from stdlib)
-    # - runTest (from testtools)
-    # But we need to type testtools first
     def __init__(
         self,
         methodName: str = 'runTest',
