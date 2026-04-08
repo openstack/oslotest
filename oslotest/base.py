@@ -15,7 +15,7 @@
 
 """Common utilities used in testing"""
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterable
 import logging
 from typing import Any
 from unittest import mock
@@ -152,7 +152,7 @@ class BaseTestCase(testtools.TestCase):
 
     def create_tempfiles(
         self,
-        files: Sequence[
+        files: Iterable[
             tuple[str, str | bytes, str] | tuple[str, str | bytes]
         ],
         ext: str = '.conf',
