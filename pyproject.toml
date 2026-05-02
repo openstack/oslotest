@@ -9,13 +9,13 @@ readme = "README.rst"
 authors = [
     {name = "OpenStack", email = "openstack-discuss@lists.openstack.org"},
 ]
+license = "Apache-2.0"
 requires-python = ">=3.10"
 dynamic = ["version", "dependencies"]
 classifiers = [
     "Environment :: OpenStack",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: POSIX :: Linux",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -33,12 +33,12 @@ Homepage = "https://docs.openstack.org/oslotest"
 Repository = "https://opendev.org/openstack/oslotest"
 
 [tool.setuptools]
-packages = [
-    "oslotest"
-]
 script-files = [
     "tools/oslo_debug_helper",
 ]
+
+[tool.setuptools.packages.find]
+include = ["oslotest"]
 
 [tool.mypy]
 python_version = "3.10"
