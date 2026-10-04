@@ -1,8 +1,0 @@
-[run]
-branch = True
-source = oslotest
-omit = oslotest/tests/*
-
-[report]
-ignore_errors = True
-precision = 2
